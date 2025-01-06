@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
     [SerializeField] protected float health = 100.0f;
     [SerializeField] protected float speed = 10.0f;
     [SerializeField] protected float attackPower = 3;
+ 
     private WaitForSeconds deathDelay = new WaitForSeconds(2);
 
 

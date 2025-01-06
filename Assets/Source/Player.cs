@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : Character
 {
+
     InputControls controls;
     // Start is called before the first frame update
     private Rigidbody2D rb2D;
@@ -13,25 +14,57 @@ public class Player : Character
     float xDirection;
     float yDirection;
 
+
+    // Raycast data
+    [SerializeField] private float raycastDirection = 5.0f;
+    [SerializeField] private float raycastLength = 10.0f;
+    [SerializeField] private GameObject eye;
+    // Camera Follow Reference
+
+
+    // Animation 
+    private Animator playerAnimator;
+
     // gravity 
     [SerializeField]
     // adding gravity
     private float gravityScale = -10f;
 
+    // facing direction
+    float facingDirection = 0f;
 
+
+    //Implementing state machine
+    public enum PlayerState
+    {
+        Idle, 
+        Run,
+        Attack,
+        Dead,
+        Hurt
+    }
+
+    private PlayerState _state;
+   
     // Character movement
     private void CharacterMovement()
     {
         if (xDirection < 0)
         {
             rb2D.velocity = new Vector2(-speed, gravityScale);
+            _state = PlayerState.Run;
+            facingDirection = -1;
         }
         else if (xDirection > 0)
         {
             rb2D.velocity = new Vector2(speed, gravityScale);
+            _state = PlayerState.Run;
+            facingDirection = 1;
         }
         else
         {
+            // Change to idle only if not hurt or dead
+            if (_state == PlayerState.Run) _state = PlayerState.Idle;
             rb2D.velocity =new Vector2(0,gravityScale);
         }
     }
@@ -41,14 +74,22 @@ public class Player : Character
     {
         if (rb2D.velocity.x < 0)
         {
+            
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         else if (rb2D.velocity.x > 0)
         {
+            
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 
+    void Start()
+    {
+        _state = PlayerState.Idle;
+        rb2D = GetComponent<Rigidbody2D>();
+        playerAnimator = GetComponent<Animator>();
+    }
     private void Awake()
     {
         GetInput();
@@ -65,16 +106,14 @@ public class Player : Character
     {
         controls.PlayerControls.Disable();    
     }
-    void Start()
-    {
-        rb2D = GetComponent<Rigidbody2D>();
-    }
 
     // Update is called once per frame
     void Update()
     {
         CharacterMovement();
         HandleSpriteFlip();
+        EyeRay();
+        AnimHandle();
     }
 
 
@@ -83,6 +122,32 @@ public class Player : Character
         
     }
 
+    private void OnDrawGizmosSelected()
+    {
+       
+    }
+
+
+    // Raycast 
+
+    // for debugging
+    private void OnDrawGizmos()
+    {
+        Debug.DrawRay(eye.transform.position, Vector2.right * facingDirection * raycastLength, Color.red);
+    }
+    private void EyeRay()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(eye.transform.position, Vector2.left * facingDirection * raycastLength);
+
+        if (hit)
+        {
+            if (hit.collider.tag == "EndTilemap")
+            {
+                // Change the camera settings to static
+
+            }
+        }
+    }
     private void GetInput()
     {
         controls = new InputControls();
@@ -95,4 +160,22 @@ public class Player : Character
         controls.PlayerControls.CameraControl.performed += ctx => yDirection = ctx.ReadValue<float>();
         controls.PlayerControls.CameraControl.canceled += ctx => yDirection = 0;
     }
+
+
+    /* -------------------- ANIMATION ------------------------------------*/
+    private void AnimHandle()
+    {
+        // idle when not moving
+        if (_state == PlayerState.Idle)
+        {
+            playerAnimator.SetInteger("AnimState", 0);
+        }
+        else if (_state == PlayerState.Run)
+        {
+            playerAnimator.SetInteger("AnimState", 2);
+        }
+    }
 }
+
+
+  
