@@ -34,10 +34,17 @@ public class Player : Character
     float facingDirection = 0f;
 
 
+    // combat functionality
+    bool attackAttempt;
+
+
+    //--------------------------DEBUGGING PURPOSES ONLY `````````````````//
+    [SerializeField] private float attackCooldown = 0.8f;
+
     //Implementing state machine
     public enum PlayerState
     {
-        Idle, 
+        Idle,
         Run,
         Attack,
         Dead,
@@ -45,10 +52,18 @@ public class Player : Character
     }
 
     private PlayerState _state;
-   
+
     // Character movement
     private void CharacterMovement()
     {
+        // Player moves if and only if in idle and run state.
+        if (_state == PlayerState.Hurt || _state == PlayerState.Dead || _state == PlayerState.Attack)
+        {
+            // keep the body in idle
+            rb2D.velocity = new Vector2(0, gravityScale);
+            return;
+        };
+
         if (xDirection < 0)
         {
             rb2D.velocity = new Vector2(-speed, gravityScale);
@@ -65,7 +80,7 @@ public class Player : Character
         {
             // Change to idle only if not hurt or dead
             if (_state == PlayerState.Run) _state = PlayerState.Idle;
-            rb2D.velocity =new Vector2(0,gravityScale);
+            rb2D.velocity = new Vector2(0, gravityScale);
         }
     }
 
@@ -74,16 +89,16 @@ public class Player : Character
     {
         if (rb2D.velocity.x < 0)
         {
-            
+
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         else if (rb2D.velocity.x > 0)
         {
-            
+
             transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
-
+    // START
     void Start()
     {
         _state = PlayerState.Idle;
@@ -104,7 +119,7 @@ public class Player : Character
 
     void OnDisable()
     {
-        controls.PlayerControls.Disable();    
+        controls.PlayerControls.Disable();
     }
 
     // Update is called once per frame
@@ -115,21 +130,7 @@ public class Player : Character
         EyeRay();
         AnimHandle();
     }
-
-
-    void AddGravity()
-    {
-        
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-       
-    }
-
-
-    // Raycast 
-
+  
     // for debugging
     private void OnDrawGizmos()
     {
@@ -159,6 +160,10 @@ public class Player : Character
         // take some vertical input;
         controls.PlayerControls.CameraControl.performed += ctx => yDirection = ctx.ReadValue<float>();
         controls.PlayerControls.CameraControl.canceled += ctx => yDirection = 0;
+
+        // take attack input
+        controls.PlayerControls.Attack.started += ctx => AttemptAttack();
+
     }
 
 
@@ -174,6 +179,34 @@ public class Player : Character
         {
             playerAnimator.SetInteger("AnimState", 2);
         }
+        else if (_state == PlayerState.Attack)
+        {
+            
+        }
+        
+    }
+
+    /* -------------------- MELEE COMBAT---------------------------------*/
+    private void AttemptAttack()
+    {
+        // check if attemptAttack is false;
+        // if false, check for state, is it not hurting or dead
+        // if not start a coroutine which makes attemptAttack false and changes the state to attack
+        if (attackAttempt == false && _state != PlayerState.Hurt && _state != PlayerState.Dead && _state != PlayerState.Attack) 
+        {
+            StartCoroutine(AttackingOnTime());
+        }
+    }
+
+    // coroutine for attack attempt.
+    private IEnumerator AttackingOnTime()
+    {
+        playerAnimator.SetTrigger("Attack");
+        _state = PlayerState.Attack;
+        yield return new WaitForSeconds(attackCooldown);
+        attackAttempt = false;
+        _state = PlayerState.Idle;
+
     }
 }
 

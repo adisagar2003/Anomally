@@ -59,10 +59,7 @@ public class CharacterFollowPoint : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
-    {
-        Debug.Log(transform.position.x);
-    }
+
     void FixedUpdate()
     {
         // according to states
