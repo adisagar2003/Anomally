@@ -39,7 +39,9 @@ public class Player : Character
 
 
     //--------------------------DEBUGGING PURPOSES ONLY `````````````````//
+    [Header("Debug :3")]
     [SerializeField] private float attackCooldown = 0.8f;
+    [SerializeField] private float sphereRadius = 0.3f;
 
     //Implementing state machine
     public enum PlayerState
@@ -135,6 +137,7 @@ public class Player : Character
     private void OnDrawGizmos()
     {
         Debug.DrawRay(eye.transform.position, Vector2.right * facingDirection * raycastLength, Color.red);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0.13f,0,0),sphereRadius);
     }
     private void EyeRay()
     {
@@ -202,6 +205,7 @@ public class Player : Character
     private IEnumerator AttackingOnTime()
     {
         playerAnimator.SetTrigger("Attack");
+        Physics2D.OverlapCircleAll(transform.position, sphereRadius);
         _state = PlayerState.Attack;
         yield return new WaitForSeconds(attackCooldown);
         attackAttempt = false;
