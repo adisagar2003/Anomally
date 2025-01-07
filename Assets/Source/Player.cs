@@ -33,6 +33,7 @@ public class Player : Character
     // facing direction
     float facingDirection = 0f;
 
+    
 
     // combat functionality
     bool attackAttempt;
@@ -42,7 +43,7 @@ public class Player : Character
     [Header("Debug :3")]
     [SerializeField] private float attackCooldown = 0.8f;
     [SerializeField] private float sphereRadius = 0.3f;
-
+    [SerializeField] private Vector3 hitColliderOffset;
     //Implementing state machine
     public enum PlayerState
     {
@@ -137,7 +138,7 @@ public class Player : Character
     private void OnDrawGizmos()
     {
         Debug.DrawRay(eye.transform.position, Vector2.right * facingDirection * raycastLength, Color.red);
-        Gizmos.DrawWireSphere(transform.position + new Vector3(0.13f,0,0),sphereRadius);
+        Gizmos.DrawWireSphere(transform.position + hitColliderOffset,sphereRadius);
     }
     private void EyeRay()
     {
@@ -205,7 +206,7 @@ public class Player : Character
     private IEnumerator AttackingOnTime()
     {
         playerAnimator.SetTrigger("Attack");
-        Physics2D.OverlapCircleAll(transform.position, sphereRadius);
+        Physics2D.OverlapCircleAll(transform.position + hitColliderOffset, sphereRadius);
         _state = PlayerState.Attack;
         yield return new WaitForSeconds(attackCooldown);
         attackAttempt = false;
