@@ -206,7 +206,17 @@ public class Player : Character
     private IEnumerator AttackingOnTime()
     {
         playerAnimator.SetTrigger("Attack");
-        Physics2D.OverlapCircleAll(transform.position + hitColliderOffset, sphereRadius);
+        Collider2D[] list_of_things_hit = Physics2D.OverlapCircleAll(transform.position + hitColliderOffset, sphereRadius);
+        foreach (Collider2D c in list_of_things_hit)
+        {
+            if (c.tag=="Enemy")
+            {
+                Debug.LogWarning("Something was hit: " + c.gameObject.name);
+                // get damagable component
+                IDamagable destructibleAttributes = c.gameObject.GetComponent<IDamagable>();
+                destructibleAttributes.TakeDamage(attackPower);
+            }
+        }
         _state = PlayerState.Attack;
         yield return new WaitForSeconds(attackCooldown);
         attackAttempt = false;
