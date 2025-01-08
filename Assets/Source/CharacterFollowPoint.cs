@@ -18,11 +18,17 @@ public class CharacterFollowPoint : MonoBehaviour
     public enum CameraState
     {
         FollowPlayer, 
-        Static
+        Static,
+        Shake
     }
 
     public CameraState _state;
-  
+
+    [Header("Camera Shake")]
+    [SerializeField] private float cameraShakeStrength = 5.0f;
+    [SerializeField] private float cameraShakeCooldown = 5.0f;
+    [SerializeField] private float directionOffset = 2.0f;
+
     private void Awake()
     {
         
@@ -100,5 +106,24 @@ public class CharacterFollowPoint : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * speed) + offset;
 
         }
+    }
+
+    /*
+     @void 
+    Shakes camera, towards the direction the player is 
+    hurting the destructible
+     */
+    [ContextMenu("Shake Camera")]
+    public void ShakeCamera(float direction) 
+    {
+
+        // shake camera
+        // -1 for left
+        // 1 for right
+        Debug.Log("Shake the camera");
+        Vector3 initialPos = transform.position;
+        Vector3 randomPositionAfterShake = new Vector3(directionOffset * direction, 0,0)+transform.position + Random.insideUnitSphere * cameraShakeStrength * 1f;
+        transform.position = randomPositionAfterShake;
+        transform.position = Vector3.Lerp(randomPositionAfterShake, initialPos, Time.deltaTime * cameraShakeCooldown);
     }
 }

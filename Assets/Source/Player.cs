@@ -19,8 +19,9 @@ public class Player : Character
     [SerializeField] private float raycastDirection = 5.0f;
     [SerializeField] private float raycastLength = 10.0f;
     [SerializeField] private GameObject eye;
-    // Camera Follow Reference
 
+    // Camera Follow Reference
+    [SerializeField] private GameObject cameraFollowPoint;
 
     // Animation 
     private Animator playerAnimator;
@@ -31,14 +32,14 @@ public class Player : Character
     private float gravityScale = -10f;
 
     // facing direction
-    float facingDirection = 0f;
+    float facingDirection = 1f;
 
     
 
-    // combat functionality
+    // Combat functionality
     bool attackAttempt;
-
-
+    [SerializeField] private Transform hurtboxPosition;
+    [SerializeField] private Vector3 hurtboxPositionOffset;
     //--------------------------DEBUGGING PURPOSES ONLY `````````````````//
     [Header("Debug :3")]
     [SerializeField] private float attackCooldown = 0.8f;
@@ -137,8 +138,8 @@ public class Player : Character
     // for debugging
     private void OnDrawGizmos()
     {
-        Debug.DrawRay(eye.transform.position, Vector2.right * facingDirection * raycastLength, Color.red);
-        Gizmos.DrawWireSphere(transform.position + hitColliderOffset,sphereRadius);
+        Debug.DrawRay(eye.transform.position, Vector2.right  * raycastLength, Color.red);
+        Gizmos.DrawWireSphere(hurtboxPosition.position  + hitColliderOffset,sphereRadius);
     }
     private void EyeRay()
     {
@@ -149,7 +150,10 @@ public class Player : Character
             if (hit.collider.tag == "EndTilemap")
             {
                 // Change the camera settings to static
-
+               
+                
+     
+             
             }
         }
     }
@@ -206,7 +210,7 @@ public class Player : Character
     private IEnumerator AttackingOnTime()
     {
         playerAnimator.SetTrigger("Attack");
-        Collider2D[] list_of_things_hit = Physics2D.OverlapCircleAll(transform.position + hitColliderOffset, sphereRadius);
+        Collider2D[] list_of_things_hit = Physics2D.OverlapCircleAll(hurtboxPosition.position + hitColliderOffset, sphereRadius);
         foreach (Collider2D c in list_of_things_hit)
         {
             if (c.tag=="Enemy")
@@ -215,6 +219,10 @@ public class Player : Character
                 // get damagable component
                 IDamagable destructibleAttributes = c.gameObject.GetComponent<IDamagable>();
                 destructibleAttributes.TakeDamage(attackPower);
+                // Shake camera 
+                // call the function 
+                CharacterFollowPoint characterFollowPointAttributes = cameraFollowPoint.GetComponent<CharacterFollowPoint>();
+                characterFollowPointAttributes.ShakeCamera(facingDirection);
             }
         }
         _state = PlayerState.Attack;

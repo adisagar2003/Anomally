@@ -1368,6 +1368,9 @@ MonoBehaviour:
   leanTowardsDirection: -0.55
   CameraBoundsX: -0.5
   _state: 0
+  cameraShakeStrength: 0.19
+  cameraShakeCooldown: 5
+  directionOffset: 0.21
 --- !u!4 &809083357 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8862931060341379005, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
@@ -1435,6 +1438,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 809083357}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!1 &1384495641
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1384495642}
+  m_Layer: 0
+  m_Name: HurtSphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1384495642
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384495641}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.48, y: 0.88, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 809083357}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1479954148
 GameObject:
   m_ObjectHideFlags: 0
@@ -2349,7 +2383,7 @@ Transform:
   m_GameObject: {fileID: 2098742729}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.450403, y: -3.007, z: -0.04053328}
+  m_LocalPosition: {x: 14.16, y: -3.007, z: -0.04053328}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2367,7 +2401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c420393a0c05ba41867c9cb9d7708d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 4
+  health: 10000
 --- !u!1001 &6860983032664534360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2397,12 +2431,20 @@ PrefabInstance:
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 1554570445622281327, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
+      propertyPath: hurtboxPosition
+      value: 
+      objectReference: {fileID: 1384495642}
+    - target: {fileID: 1554570445622281327, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
+      propertyPath: cameraFollowPoint
+      value: 
+      objectReference: {fileID: 719294743}
+    - target: {fileID: 1554570445622281327, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
       propertyPath: hitColliderOffset.x
-      value: 0.66
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1554570445622281327, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
       propertyPath: hitColliderOffset.y
-      value: 0.96
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1594582797558890093, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
       propertyPath: m_Name
@@ -2430,7 +2472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8862931060341379005, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 16.93
       objectReference: {fileID: 0}
     - target: {fileID: 8862931060341379005, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2475,6 +2517,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8862931060341379005, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1382413488}
+    - targetCorrespondingSourceObject: {fileID: 8862931060341379005, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1384495642}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
 --- !u!1660057539 &9223372036854775807
