@@ -58,6 +58,8 @@ public class CharacterFollowPoint : MonoBehaviour
         controls = new InputControls();
 
         // take some horizontal input.
+        // take input only if the player is not hurt or dead
+
         controls.PlayerControls.Horizontal.performed += ctx => xDirection = ctx.ReadValue<float>(); ;
         controls.PlayerControls.Horizontal.canceled += ctx => xDirection = 0;
 
@@ -126,4 +128,6 @@ public class CharacterFollowPoint : MonoBehaviour
         transform.position = randomPositionAfterShake;
         transform.position = Vector3.Lerp(randomPositionAfterShake, initialPos, Time.deltaTime * cameraShakeCooldown);
     }
+
+  
 }

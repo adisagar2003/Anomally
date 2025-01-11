@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamagable
 {
+    [Header("Debug")]
+    [SerializeField] private float hurtSphereRadius;
+    [SerializeField] private Transform hurtSphereHolder;
+
+    [Header("Combat")]
+    [SerializeField] private float attackCooldown = 0.8f;
+    [SerializeField] private bool canAttackAgain = true;
     // Start is called before the first frame update
 
     public float health = 19.0f;
     private Animator animator;
     GameObject player;
+
+    
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -30,7 +39,6 @@ public class Enemy : MonoBehaviour, IDamagable
 
         if (Vector2.Dot(forward, toOther) < 0.7f)
         {
-            Debug.Log("facing the object");
             transform.rotation = Quaternion.Euler(0, 180, 0);
             return true;
         }
@@ -66,4 +74,38 @@ public class Enemy : MonoBehaviour, IDamagable
         }
 
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(hurtSphereHolder.position, hurtSphereRadius);
+    }
+
+    public void AttackPlayer()
+    {
+        Collider2D[] hitObjects = Physics2D.OverlapCircleAll(hurtSphereHolder.position, hurtSphereRadius);
+
+        foreach(Collider2D hitObject in hitObjects)
+        {
+            if (hitObject.tag == "Player" && canAttackAgain == true)
+            {
+                Player PlayerAttributes = hitObject.GetComponent<Player>();
+                
+                if (PlayerAttributes != null)
+                {
+                    Debug.Log("Player attributes found!");
+                    PlayerAttributes.Hurt(-1, 10);
+                    StartCoroutine(AttackCooldown());
+                }
+            }
+        }
+        IEnumerator AttackCooldown()
+        {
+            canAttackAgain = false;
+            yield return new WaitForSeconds(attackCooldown);
+            canAttackAgain = true;
+        }
+    }
+
+  
 }
+

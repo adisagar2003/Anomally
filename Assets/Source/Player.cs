@@ -19,7 +19,7 @@ public class Player : Character
     [SerializeField] private float raycastDirection = 5.0f;
     [SerializeField] private float raycastLength = 10.0f;
     [SerializeField] private GameObject eye;
-
+   
     // Camera Follow Reference
     [SerializeField] private GameObject cameraFollowPoint;
 
@@ -40,6 +40,14 @@ public class Player : Character
     bool attackAttempt;
     [SerializeField] private Transform hurtboxPosition;
     [SerializeField] private Vector3 hurtboxPositionOffset;
+
+    // Functionality When getting hurt.
+    [Header("Hurt Control")]
+    [SerializeField] private Vector2 parryVelocity;
+    [SerializeField] private float hurtCooldown = 0.1f;
+    [SerializeField] private float speedOfGettingThrownAway;
+    private SpriteRenderer spriteRend;
+
     //--------------------------DEBUGGING PURPOSES ONLY `````````````````//
     [Header("Debug :3")]
     [SerializeField] private float attackCooldown = 0.8f;
@@ -55,60 +63,74 @@ public class Player : Character
         Hurt
     }
 
-    private PlayerState _state;
+    // Visualize the state
+    [Header("Current State---")]
+    [SerializeField] private PlayerState _state;
 
-    // Character movement
-    private void CharacterMovement()
-    {
-        // Player moves if and only if in idle and run state.
-        if (_state == PlayerState.Hurt || _state == PlayerState.Dead || _state == PlayerState.Attack)
-        {
-            // keep the body in idle
-            rb2D.velocity = new Vector2(0, gravityScale);
-            return;
-        };
-
-        if (xDirection < 0)
-        {
-            rb2D.velocity = new Vector2(-speed, gravityScale);
-            _state = PlayerState.Run;
-            facingDirection = -1;
-        }
-        else if (xDirection > 0)
-        {
-            rb2D.velocity = new Vector2(speed, gravityScale);
-            _state = PlayerState.Run;
-            facingDirection = 1;
-        }
-        else
-        {
-            // Change to idle only if not hurt or dead
-            if (_state == PlayerState.Run) _state = PlayerState.Idle;
-            rb2D.velocity = new Vector2(0, gravityScale);
-        }
-    }
-
-    // Handle sprite flip
-    protected void HandleSpriteFlip()
-    {
-        if (rb2D.velocity.x < 0)
-        {
-
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        else if (rb2D.velocity.x > 0)
-        {
-
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
-    }
     // START
     void Start()
     {
         _state = PlayerState.Idle;
         rb2D = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
+        spriteRend = GetComponent<SpriteRenderer>();
     }
+
+    // Character movement
+    private void CharacterMovement()
+    {
+        // Player moves if and only if in idle and run state.
+        if (_state == PlayerState.Dead || _state == PlayerState.Attack)
+        {
+            // keep the body in idle
+            rb2D.velocity = new Vector2(0, gravityScale);
+           
+        };
+        if (xDirection == 0 && (_state == PlayerState.Idle))
+        {
+            rb2D.velocity = new Vector2(0, gravityScale);
+        }
+        if (xDirection < 0 && (_state == PlayerState.Run || _state == PlayerState.Idle))
+        {
+            rb2D.velocity = new Vector2(-speed, gravityScale);
+            _state = PlayerState.Run;
+            facingDirection = -1;
+        }
+        else if (xDirection > 0 && (_state == PlayerState.Run || _state == PlayerState.Idle))
+        {
+            rb2D.velocity = new Vector2(speed, gravityScale);
+            _state = PlayerState.Run;
+            facingDirection = 1;
+        } else if (xDirection == 0 && _state == PlayerState.Run)
+        {
+            // set to idle
+            _state = PlayerState.Idle;
+            rb2D.velocity = new Vector2(0, gravityScale);
+        }
+    }
+
+    // Handle sprite flip
+    protected void HandleSpriteFlip()
+    { 
+        if (_state == PlayerState.Hurt) { 
+
+        }
+        else
+        {
+            if (rb2D.velocity.x < 0)
+            {
+
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else if (rb2D.velocity.x > 0)
+            {
+
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+        }
+       
+    }
+ 
     private void Awake()
     {
         GetInput();
@@ -133,9 +155,10 @@ public class Player : Character
         HandleSpriteFlip();
         EyeRay();
         AnimHandle();
+        ThrowAwayOffset();
     }
   
-    // for debugging
+    // for debugging and visualizing hitboxes and hurtboxes
     private void OnDrawGizmos()
     {
         Debug.DrawRay(eye.transform.position, Vector2.right  * raycastLength, Color.red);
@@ -215,7 +238,6 @@ public class Player : Character
         {
             if (c.tag=="Enemy")
             {
-                Debug.LogWarning("Something was hit: " + c.gameObject.name);
                 // get damagable component
                 IDamagable destructibleAttributes = c.gameObject.GetComponent<IDamagable>();
                 destructibleAttributes.TakeDamage(attackPower);
@@ -231,6 +253,52 @@ public class Player : Character
         _state = PlayerState.Idle;
 
     }
+
+
+    //*-------------- HURT ------------*//
+    public void Hurt(float direction, float damage)
+    {
+        // need to put an offset to the direction of hurt.
+
+        // should change the state to hurt. 
+        _state = PlayerState.Hurt;
+        // should reduce the health.
+        health -= damage;
+        // change sprite color to white.
+        // Start a coroutine to change back to idle state.
+        spriteRend.color = Color.red;
+        playerAnimator.SetTrigger("Hurt");
+        StartCoroutine(HurtCooldown());
+        
+    }
+
+
+    private IEnumerator HurtCooldown()
+    {
+        // throw away offset 
+        
+        ThrowAwayOffset();
+        
+        yield return new WaitForSeconds(hurtCooldown);
+  
+        spriteRend.color = Color.white;
+        
+        _state = PlayerState.Idle;
+    }
+
+    private void ThrowAwayOffset()
+    {
+        
+        if (_state == PlayerState.Hurt)
+        {
+            Debug.Log("Player offset func running");
+            
+            rb2D.velocity = Vector2.Lerp(rb2D.velocity, parryVelocity, Time.deltaTime*speedOfGettingThrownAway);
+
+        }
+
+    }
+
 }
 
 
