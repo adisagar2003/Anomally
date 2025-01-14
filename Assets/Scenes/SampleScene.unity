@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 135964867}
   - component: {fileID: 135964866}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1880,6 +1880,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8862931060341379005, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
   m_PrefabInstance: {fileID: 6860983032664534360}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1248722763 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1554570445622281327, guid: 54a5093138af82d48a83d3b9bc1300fa, type: 3}
+  m_PrefabInstance: {fileID: 6860983032664534360}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831e6c4af559b4c48a7ce6fb9f621a5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1304331715
 GameObject:
   m_ObjectHideFlags: 0
@@ -2090,6 +2101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ecaa2ed34a98949b9a78cf7206ec5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthText: {fileID: 135964866}
+  player: {fileID: 1248722763}
 --- !u!4 &1502758728
 Transform:
   m_ObjectHideFlags: 0

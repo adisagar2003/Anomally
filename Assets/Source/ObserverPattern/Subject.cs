@@ -6,15 +6,15 @@ public abstract class Subject : MonoBehaviour
 {
     // Stores a list of observers
     [Header("Observers")]
-    [SerializeField] public List<IObserver> observers = new List<IObserver>();
+    [SerializeField] protected List<IObserver> observers = new List<IObserver>();
     
     // invoke event 
-    protected void AddObserver(IObserver obs)
+    public void AddObserver(IObserver obs)
     {
         observers.Add(obs);
     }
 
-    protected void RemoveObserver(IObserver obs)
+    public void RemoveObserver(IObserver obs)
     {
         observers.Remove(obs);
     }

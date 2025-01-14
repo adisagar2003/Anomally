@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+
 public class Player : Character
 {
 
     InputControls controls;
+
     // Start is called before the first frame update
     private Rigidbody2D rb2D;
 
     // x axis controller input 
     float xDirection;
     float yDirection;
-
-   
 
     // Raycast data
     [SerializeField] private float raycastDirection = 5.0f;
@@ -35,6 +36,8 @@ public class Player : Character
     // facing direction
     float facingDirection = 1f;
 
+    // SOLID PRINCIPLE
+    private PlayerCamera playerCameraControl;
     
 
     // Combat functionality
@@ -58,6 +61,10 @@ public class Player : Character
     [SerializeField] private float attackCooldown = 0.8f;
     [SerializeField] private float sphereRadius = 0.3f;
     [SerializeField] private Vector3 hitColliderOffset;
+
+
+    // Camera controls 
+
     //Implementing state machine
     public enum PlayerState
     {
@@ -69,7 +76,7 @@ public class Player : Character
     }
 
     // Visualize the state
-    [Header("Current State---")]
+    [Header("Current State")]
     [SerializeField] private PlayerState _state;
 
     // START
@@ -80,11 +87,15 @@ public class Player : Character
         playerAnimator = GetComponent<Animator>();
         spriteRend = GetComponent<SpriteRenderer>();
 
-        // `````OBSERVER PATTERN IMPLEMENTATION---HANDLE UI, SOUND````
+        // player camera control 
+        playerCameraControl = new PlayerCamera();
+        playerCameraControl.cameraFollowPoint = GameObject.Find("CharacterFollowPoint");
+        // `````OBSERVER PATTERN IMPLEMENTATION HANDLE UI, SOUND
 
         // Add UI.
         AddObserver(UI.GetComponent<IObserver>());
     }
+
 
     // Character movement
     private void CharacterMovement()
@@ -96,22 +107,27 @@ public class Player : Character
             rb2D.velocity = new Vector2(0, gravityScale);
            
         };
+
         if (xDirection == 0 && (_state == PlayerState.Idle))
         {
             rb2D.velocity = new Vector2(0, gravityScale);
         }
+
         if (xDirection < 0 && (_state == PlayerState.Run || _state == PlayerState.Idle))
         {
             rb2D.velocity = new Vector2(-speed, gravityScale);
             _state = PlayerState.Run;
             facingDirection = -1;
         }
+
         else if (xDirection > 0 && (_state == PlayerState.Run || _state == PlayerState.Idle))
         {
             rb2D.velocity = new Vector2(speed, gravityScale);
             _state = PlayerState.Run;
             facingDirection = 1;
-        } else if (xDirection == 0 && _state == PlayerState.Run)
+        } 
+        
+        else if (xDirection == 0 && _state == PlayerState.Run)
         {
             // set to idle
             _state = PlayerState.Idle;
@@ -174,6 +190,8 @@ public class Player : Character
         Debug.DrawRay(eye.transform.position, Vector2.right  * raycastLength, Color.red);
         Gizmos.DrawWireSphere(hurtboxPosition.position  + hitColliderOffset,sphereRadius);
     }
+
+ 
     private void EyeRay()
     {
         RaycastHit2D hit = Physics2D.Raycast(eye.transform.position, Vector2.left * facingDirection * raycastLength);
@@ -220,11 +238,6 @@ public class Player : Character
         {
             playerAnimator.SetInteger("AnimState", 2);
         }
-        else if (_state == PlayerState.Attack)
-        {
-            
-        }
-        
     }
 
     /* -------------------- MELEE COMBAT---------------------------------*/
@@ -251,10 +264,10 @@ public class Player : Character
                 // get damagable component
                 IDamagable destructibleAttributes = c.gameObject.GetComponent<IDamagable>();
                 destructibleAttributes.TakeDamage(attackPower);
+
                 // Shake camera 
                 // call the function 
-                CharacterFollowPoint characterFollowPointAttributes = cameraFollowPoint.GetComponent<CharacterFollowPoint>();
-                characterFollowPointAttributes.ShakeCamera(facingDirection);
+                playerCameraControl.ShakeCamera(facingDirection);
             }
         }
         _state = PlayerState.Attack;
@@ -268,18 +281,17 @@ public class Player : Character
     //*-------------- HURT ------------*//
     public void Hurt(float direction, float damage)
     {
-        // need to put an offset to the direction of hurt.
-
         // should change the state to hurt. 
         _state = PlayerState.Hurt;
         // should reduce the health.
         health -= damage;
         // change sprite color to white.
-        // Start a coroutine to change back to idle state.
         spriteRend.color = Color.red;
+        // Set anim trigger
         playerAnimator.SetTrigger("Hurt");
         // Invoke The player hurt Event
         InvokeEvent();
+        // Start a coroutine to change back to idle state.
         StartCoroutine(HurtCooldown());
         
     }
