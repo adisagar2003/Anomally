@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : Subject
 {
     // This is the parent script for all characters (Player, Enemies);
 
-    [SerializeField] protected float health = 100.0f;
+    // Health 
+    [SerializeField] protected float health  = 100.0f;
     [SerializeField] protected float speed = 10.0f;
     [SerializeField] protected float attackPower = 3;
  
@@ -14,7 +15,10 @@ public class Character : MonoBehaviour
 
 
 
-
+    public float GetHealth()
+    {
+        return this.health;
+    }
 
     protected virtual void TakeDamage(float amount)
     {

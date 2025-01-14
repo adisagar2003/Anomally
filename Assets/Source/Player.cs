@@ -14,6 +14,7 @@ public class Player : Character
     float xDirection;
     float yDirection;
 
+   
 
     // Raycast data
     [SerializeField] private float raycastDirection = 5.0f;
@@ -48,6 +49,10 @@ public class Player : Character
     [SerializeField] private float speedOfGettingThrownAway;
     private SpriteRenderer spriteRend;
 
+    // FUNCTIONALITY FOR OBSERVER PATTERNS
+    [Header("Observer patterns subjects")]
+    [SerializeField] private GameObject UI;
+
     //--------------------------DEBUGGING PURPOSES ONLY `````````````````//
     [Header("Debug :3")]
     [SerializeField] private float attackCooldown = 0.8f;
@@ -74,6 +79,11 @@ public class Player : Character
         rb2D = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
         spriteRend = GetComponent<SpriteRenderer>();
+
+        // `````OBSERVER PATTERN IMPLEMENTATION---HANDLE UI, SOUND````
+
+        // Add UI.
+        AddObserver(UI.GetComponent<IObserver>());
     }
 
     // Character movement
@@ -268,6 +278,8 @@ public class Player : Character
         // Start a coroutine to change back to idle state.
         spriteRend.color = Color.red;
         playerAnimator.SetTrigger("Hurt");
+        // Invoke The player hurt Event
+        InvokeEvent();
         StartCoroutine(HurtCooldown());
         
     }

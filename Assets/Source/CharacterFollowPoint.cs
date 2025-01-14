@@ -122,7 +122,6 @@ public class CharacterFollowPoint : MonoBehaviour
         // shake camera
         // -1 for left
         // 1 for right
-        Debug.Log("Shake the camera");
         Vector3 initialPos = transform.position;
         Vector3 randomPositionAfterShake = new Vector3(directionOffset * direction, 0,0)+transform.position + Random.insideUnitSphere * cameraShakeStrength * 1f;
         transform.position = randomPositionAfterShake;

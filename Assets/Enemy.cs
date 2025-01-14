@@ -93,6 +93,8 @@ public class Enemy : MonoBehaviour, IDamagable
                 if (PlayerAttributes != null)
                 {
                     Debug.Log("Player attributes found!");
+                    // give first parameter according to the direction of hit.
+
                     PlayerAttributes.Hurt(-1, 10);
                     StartCoroutine(AttackCooldown());
                 }
