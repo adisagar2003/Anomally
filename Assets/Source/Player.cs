@@ -265,8 +265,6 @@ public class Player : Character
                 IDamagable destructibleAttributes = c.gameObject.GetComponent<IDamagable>();
                 destructibleAttributes.TakeDamage(attackPower);
 
-                // Shake camera 
-                // call the function 
                 playerCameraControl.ShakeCamera(facingDirection);
             }
         }
