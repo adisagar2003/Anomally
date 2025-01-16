@@ -50,7 +50,7 @@ public class Player : Character
     [SerializeField] private Vector2 parryVelocity;
     [SerializeField] private float hurtCooldown = 0.1f;
     [SerializeField] private float speedOfGettingThrownAway;
-    private SpriteRenderer spriteRend;
+    [SerializeField] private SpriteRenderer spriteRend;
 
     // FUNCTIONALITY FOR OBSERVER PATTERNS
     [Header("Observer patterns subjects")]
@@ -85,7 +85,6 @@ public class Player : Character
         _state = PlayerState.Idle;
         rb2D = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
-        spriteRend = GetComponent<SpriteRenderer>();
 
         // player camera control 
         playerCameraControl = new PlayerCamera();
