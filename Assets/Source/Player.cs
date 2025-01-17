@@ -84,7 +84,7 @@ public class Player : Character
     {
         _state = PlayerState.Idle;
         rb2D = GetComponent<Rigidbody2D>();
-        playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponent<Animator>();  
 
         // player camera control 
         playerCameraControl = new PlayerCamera();
