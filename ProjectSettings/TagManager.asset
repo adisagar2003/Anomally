@@ -3,17 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - EndTilemap
-  - Enemy
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
-  - Enemy
+  - 
   - 
   - 
   - 
@@ -40,39 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Sky
-    uniqueID: 99895549
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Ground_back1
-    uniqueID: 4163148301
+  - name: background1
+    uniqueID: 744136595
     locked: 0
-  - name: Ground_back2
-    uniqueID: 1449341809
+  - name: background2
+    uniqueID: 1624993637
     locked: 0
-  - name: Fog_front1
-    uniqueID: 2886746449
+  - name: background3
+    uniqueID: 2534193571
     locked: 0
-  - name: Ground_back3
-    uniqueID: 1827759235
-    locked: 0
-  - name: Ground_back4
-    uniqueID: 2594637659
-    locked: 0
-  - name: Ground_back5
-    uniqueID: 1509575645
-    locked: 0
-  - name: Ground
-    uniqueID: 1903910943
-    locked: 0
-  - name: Ground_front1
-    uniqueID: 1911944933
-    locked: 0
-  - name: Ground_front2
-    uniqueID: 542238767
-    locked: 0
-  - name: PlayerObjects
-    uniqueID: 1554426387
+  - name: platform
+    uniqueID: 865283881
     locked: 0
