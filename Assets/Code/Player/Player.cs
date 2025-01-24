@@ -5,28 +5,74 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private PlayerMovement playerMovement;
+    public enum PlayerState
+    {
+        Idle,
+        Jump, 
+        Run,
+        Dash
+    }
 
+    public PlayerState currentState;
+
+    //private stuff goes here
+    private PlayerMovement playerMovement;
+    private Rigidbody2D rb2D;
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        currentState = PlayerState.Idle;
+        rb2D = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        StateManagementPhysics();
+    }
+
+    private void StateManagementPhysics()
+    {
+        if (playerMovement.isOnGround)
+        {
+            if (rb2D.velocity != Vector2.zero && currentState != PlayerState.Dash) currentState = Player.PlayerState.Run;
+            if (rb2D.velocity == Vector2.zero && currentState != PlayerState.Dash) currentState = Player.PlayerState.Idle;
+        }
+        else if (!playerMovement.isOnGround)
+        {
+            currentState = Player.PlayerState.Jump;
+        }
     }
 
     public void MovePlayer(float xInput)
     {
-        playerMovement.HandleMovement(xInput);
-
+        if (currentState == PlayerState.Idle || currentState == PlayerState.Run)  playerMovement.HandleMovement(xInput);
     }
 
     public void Jump()
     {
-        playerMovement.Jump();
+        if (currentState == PlayerState.Idle || currentState == PlayerState.Run)
+        {
+            currentState = PlayerState.Jump;
+            playerMovement.Jump();
+        }
+        
+    }
+
+    public void Dash()
+    {
+        if (currentState == PlayerState.Idle || currentState == PlayerState.Run)
+        {
+            currentState = PlayerState.Dash;
+            playerMovement.Dash();
+            StartCoroutine(DashCooldown());
+        }
+    }
+
+    private IEnumerator DashCooldown()
+    {
+        yield return new WaitForSeconds(playerMovement.dashCooldown);
+        Debug.Log("Cooldown done should change to idle");
+        currentState = PlayerState.Idle;
+        rb2D.gravityScale = playerMovement.gravity;
     }
 }

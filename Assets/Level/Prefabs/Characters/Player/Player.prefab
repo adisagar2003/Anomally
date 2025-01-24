@@ -86,7 +86,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 4.72
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4155ad35996828e49a061d823c048f76, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6184a6cb2b74ce48bf56bf1559cd95c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
 --- !u!114 &6099037479171514938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,11 +157,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a56f3ef9db80324484ff1e2c08417ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 7.26
-  jumpVelocity: 13.6
   player: {fileID: 7224033287208822016}
+  playerSpeed: 7.26
+  dashIntensity: 1065.5
+  dashLerpTime: 3.9
+  dashCooldown: 16.4
+  maxSpeed: 147.2
+  gravityWhileFalling: 56
+  jumpForce: 10
   raycastDistance: 1.21
   raycastOriginPosition: {fileID: 4801192737481841455}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &2555389193785477702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,6 +221,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 84cd3a59-9e5c-440e-b50c-16dd6a24b914
     m_ActionName: PlayerControls/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7e6a4343-b713-40a2-8d98-bcc696929197
+    m_ActionName: PlayerControls/Dash[/Keyboard/j]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerControls

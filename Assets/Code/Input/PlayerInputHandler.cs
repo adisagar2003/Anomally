@@ -16,6 +16,7 @@ public class PlayerInputHandler : MonoBehaviour
         controls.PlayerControls.Move.performed += ctx => xInput = ctx.ReadValue<Vector2>();
         controls.PlayerControls.Move.canceled += ctx => xInput = Vector2.zero;
         controls.PlayerControls.Jump.performed += ctx => JumpAction();
+        controls.PlayerControls.Dash.performed += ctx => DashAction();
        
     }
 
@@ -36,6 +37,10 @@ public class PlayerInputHandler : MonoBehaviour
         player.Jump();
     }
 
+    void DashAction()
+    {
+        player.Dash();
+    }
     private void OnEnable()
     {
         controls.PlayerControls.Enable();
