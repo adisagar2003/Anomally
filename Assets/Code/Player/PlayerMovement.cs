@@ -12,23 +12,35 @@ public class PlayerMovement : MonoBehaviour
 
     // private fields
     private Rigidbody2D rb2D;
-
+    public bool isOnGround { get; private set; }
     [Header("DEBUG")]
     // these are for debugging purposes only
     [SerializeField] private float raycastDistance;
     [SerializeField] private GameObject raycastOriginPosition;
+    [SerializeField] private LayerMask layerMask;
     void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        IsOnGround();
     }
 
+    public void IsOnGround()
+    {
+       if (Physics2D.Raycast(raycastOriginPosition.transform.position, -transform.up, raycastDistance,layerMask))
+       {
+            isOnGround = true;
+       }
+
+       else
+        {
+            isOnGround = false;
+        }
+    }
     public void HandleMovement(float xInput)
     {
         if (rb2D != null)
@@ -39,20 +51,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Debug.DrawRay(raycastOriginPosition.transform.position, -transform.up * raycastDistance, Color.red);    
+    }
+
     public void Jump()
     {
-
-        // impulsive -y velocity;
-
-        if (Physics2D.Raycast(transform.position, Vector2.down, raycastDistance))
-        {
-            Debug.Log("Player should jump");
-            rb2D.AddForce(Vector2.up * jumpVelocity);
-        }
+      
     }
 
     private void OnDrawGizmosSelected()
     {
-        Debug.DrawRay(raycastOriginPosition.transform.position, transform.TransformDirection(Vector2.down)*raycastDistance, Color.yellow);
     }
 }
