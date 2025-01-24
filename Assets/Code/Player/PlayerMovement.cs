@@ -6,12 +6,16 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Controls")]
     [SerializeField] private float playerSpeed = 10.0f;
-    [SerializeField] private float jumpVelocity = 10.0f;
+    [SerializeField] private float jumpForce = 10.0f;
 
     public Player player;
 
     // private fields
     private Rigidbody2D rb2D;
+    [Header("Jumping")]
+    [SerializeField] private float gravityWhileFalling = 56.0f;
+    [SerializeField] private float gravity = 24.0f;
+    
     public bool isOnGround { get; private set; }
     [Header("DEBUG")]
     // these are for debugging purposes only
@@ -27,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         IsOnGround();
+        HandleGravityScale();
     }
 
     public void IsOnGround()
@@ -45,23 +50,34 @@ public class PlayerMovement : MonoBehaviour
     {
         if (rb2D != null)
         {
-            Vector2 horizontalVelocity = new Vector2(xInput * playerSpeed, 0);
+            Vector2 horizontalVelocity = new Vector2(xInput * playerSpeed, 0) + new Vector2(0,rb2D.velocity.y);
             rb2D.velocity = horizontalVelocity;
-
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Debug.DrawRay(raycastOriginPosition.transform.position, -transform.up * raycastDistance, Color.red);    
     }
 
     public void Jump()
     {
-      
+        if (isOnGround)
+        {
+            Debug.Log("Jump!");
+            rb2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
     }
 
-    private void OnDrawGizmosSelected()
+    // handles gravity scale while on air 
+    void HandleGravityScale()
     {
+        if (!isOnGround && rb2D.velocity.y <= 0 )
+        {
+            rb2D.gravityScale = gravityWhileFalling;
+        }
+        else if (!isOnGround && rb2D.velocity.y > 0)
+        {
+            rb2D.gravityScale = gravity;
+        }
+        if (isOnGround)
+        {
+            rb2D.gravityScale = gravity;
+        }
     }
 }
