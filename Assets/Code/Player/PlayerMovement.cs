@@ -117,7 +117,13 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log("Should be dashing");
         rb2D.gravityScale = 0;
-        rb2D.velocity = new Vector2(60 * facingDirection, 0);
+        float initialY = transform.position.y;
+        rb2D.velocity = new Vector2(dashIntensity * facingDirection, 0);
+        Debug.Log(transform.position.y - initialY);
+        if (Mathf.Abs(transform.position.y - initialY) > 10)
+        {
+            rb2D.velocity = Vector2.zero;
+        }
     }
 
 }

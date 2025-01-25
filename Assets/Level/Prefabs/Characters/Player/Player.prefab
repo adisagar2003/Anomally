@@ -159,10 +159,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 7224033287208822016}
   playerSpeed: 7.26
-  dashIntensity: 1065.5
-  dashLerpTime: 3.9
-  dashCooldown: 16.4
-  maxSpeed: 147.2
+  dashIntensity: 90
+  dashLerpTime: 1.25
+  dashCooldown: 0.002
+  maxSpeed: 73.7
   gravityWhileFalling: 56
   jumpForce: 10
   raycastDistance: 1.21

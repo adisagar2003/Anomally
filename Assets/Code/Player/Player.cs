@@ -70,8 +70,10 @@ public class Player : MonoBehaviour
 
     private IEnumerator DashCooldown()
     {
+        Debug.Log("Start of dash");
         yield return new WaitForSeconds(playerMovement.dashCooldown);
         Debug.Log("Cooldown done should change to idle");
+        MovePlayer(0);
         currentState = PlayerState.Idle;
         rb2D.gravityScale = playerMovement.gravity;
     }
