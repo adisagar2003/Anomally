@@ -10,17 +10,21 @@ public class Player : MonoBehaviour
         Idle,
         Jump, 
         Run,
-        Dash
+        Dash,
+        Attack
     }
 
     public PlayerState currentState;
 
     //private stuff goes here
     private PlayerMovement playerMovement;
+    private PlayerCombat playerCombat;
     private Rigidbody2D rb2D;
+    
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        playerCombat = GetComponent<PlayerCombat>();
         currentState = PlayerState.Idle;
         rb2D = GetComponent<Rigidbody2D>();
     }
@@ -70,11 +74,24 @@ public class Player : MonoBehaviour
 
     private IEnumerator DashCooldown()
     {
-        Debug.Log("Start of dash");
         yield return new WaitForSeconds(playerMovement.dashCooldown);
-        Debug.Log("Cooldown done should change to idle");
         MovePlayer(0);
         currentState = PlayerState.Idle;
         rb2D.gravityScale = playerMovement.gravity;
+    }
+
+
+    // Combat 
+    public void Attack()
+    {
+        // start attack only if is in ground and running or idle
+        if (currentState == PlayerState.Idle || currentState == PlayerState.Run)
+        {
+            currentState = PlayerState.Attack;
+            // player movement: slight upward push 
+
+            // player combat: Implement collisionspheres.
+            playerCombat.Attack();
+        }
     }
 }

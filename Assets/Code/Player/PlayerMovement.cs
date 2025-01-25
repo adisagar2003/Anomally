@@ -94,6 +94,16 @@ public class PlayerMovement : MonoBehaviour
         {
             facingDirection = xInput;
         }
+
+        if (xInput == 1)
+        {
+            player.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
+        else if (xInput == -1)
+        {
+            player.transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
     }
     // handles gravity scale while on air 
     void HandleGravityScale()
@@ -115,15 +125,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void Dash()
     {
-        Debug.Log("Should be dashing");
         rb2D.gravityScale = 0;
-        float initialY = transform.position.y;
         rb2D.velocity = new Vector2(dashIntensity * facingDirection, 0);
-        Debug.Log(transform.position.y - initialY);
-        if (Mathf.Abs(transform.position.y - initialY) > 10)
-        {
-            rb2D.velocity = Vector2.zero;
-        }
     }
 
 }

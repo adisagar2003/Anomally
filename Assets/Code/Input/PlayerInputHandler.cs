@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,13 @@ public class PlayerInputHandler : MonoBehaviour
         controls.PlayerControls.Move.canceled += ctx => xInput = Vector2.zero;
         controls.PlayerControls.Jump.performed += ctx => JumpAction();
         controls.PlayerControls.Dash.performed += ctx => DashAction();
+        controls.PlayerControls.Fire.performed += ctx => AttackAction();
        
+    }
+
+    private void AttackAction()
+    {
+        player.Attack();
     }
 
     // Update is called once per frame

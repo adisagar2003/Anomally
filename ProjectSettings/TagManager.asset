@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Destructible
   layers:
   - Default
   - TransparentFX
@@ -52,4 +53,7 @@ TagManager:
     locked: 0
   - name: platform
     uniqueID: 865283881
+    locked: 0
+  - name: gameInteractables
+    uniqueID: 4125950557
     locked: 0
