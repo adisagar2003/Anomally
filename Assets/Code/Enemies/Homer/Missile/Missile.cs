@@ -78,6 +78,7 @@ public class Missile : MonoBehaviour
 
         if (collision.tag == "Player")
         {
+            player.TakeDamage();
             Destroy(gameObject);
         }
     }

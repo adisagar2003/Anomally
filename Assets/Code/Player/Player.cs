@@ -11,7 +11,8 @@ public class Player : MonoBehaviour
         Jump, 
         Run,
         Dash,
-        Attack
+        Attack,
+        Hurt
     }
 
     public PlayerState currentState;
@@ -20,7 +21,11 @@ public class Player : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
     private Rigidbody2D rb2D;
-    
+
+    // event: player got hurt
+    public delegate void DamageDelegate(float damage);
+    public static event DamageDelegate DamageEvent;
+
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
@@ -93,5 +98,11 @@ public class Player : MonoBehaviour
             // player combat: Implement collisionspheres.
             playerCombat.Attack();
         }
+    }
+
+    public void TakeDamage()
+    {
+        currentState = PlayerState.Hurt;
+        DamageEvent(10.0f);
     }
 }
