@@ -4,10 +4,10 @@ using UnityEngine;
 
 public abstract class BaseEnemy : MonoBehaviour, IDamagable
 {
-    public float health { get; protected set; } = 10.0f;
-    public float damage { get; protected set; } = 10.0f;
-    public float attackCooldown { get; protected set; } = 0.5f;
-
+    [SerializeField] protected float health = 10.0f;
+    [SerializeField] protected float damage = 10.0f;
+    [SerializeField] protected float attackCooldown  = 0.5f;
+    [SerializeField] protected float hurtCooldown  = 1.2f;
     public virtual void TakeDamage(float amount)
     {
         
