@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
-{   
+{
+    public delegate void EnemyDamaged();
+    public static event EnemyDamaged EnemyDamagedEvent;
     [SerializeField] public float health { get; private set; } = 100.0f;
     [SerializeField] private float damage = 3.0f;
     [SerializeField] private float attackCooldown = .4f;
@@ -32,7 +34,9 @@ public class PlayerCombat : MonoBehaviour
                 IDamagable obInterface = ob.GetComponent<IDamagable>();
                 if (obInterface != null) {
                     Debug.Log("Damage given to object");
-                    obInterface.TakeDamage(damage); 
+                    obInterface.TakeDamage(damage);
+                    // Apply camera shake
+                    EnemyDamagedEvent();
                 }
 
             }
