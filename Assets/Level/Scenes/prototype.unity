@@ -7410,6 +7410,10 @@ PrefabInstance:
       value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 6099037479171514938, guid: 814b4ec60e6bff0428d6a03d453790e9, type: 3}
+      propertyPath: forwardForce
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6099037479171514938, guid: 814b4ec60e6bff0428d6a03d453790e9, type: 3}
       propertyPath: jumpVelocity
       value: 55.5
       objectReference: {fileID: 0}

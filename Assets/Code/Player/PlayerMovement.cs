@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     // private fields
     private Rigidbody2D rb2D;
-
+    [SerializeField] private float forwardForce = 2.0f;
     
     [Header("DEBUG")]
     // these are for debugging purposes only
@@ -121,6 +121,13 @@ public class PlayerMovement : MonoBehaviour
             rb2D.gravityScale = gravity;
           
         }
+    }
+
+   
+    // when attacking, sligtly move forward;
+    public void MoveForwardByAttack()
+    {
+        rb2D.AddForce(new Vector2(facingDirection * forwardForce, 0), ForceMode2D.Impulse);
     }
 
     public void Dash()

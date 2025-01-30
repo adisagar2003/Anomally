@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
         {
             currentState = PlayerState.Attack;
             // player movement: slight upward push 
-
+            playerMovement.MoveForwardByAttack();
             // player combat: Implement collisionspheres.
             playerCombat.Attack();
         }
