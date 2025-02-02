@@ -13,9 +13,9 @@ public class Missile : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private float upwardForce;
     private Rigidbody2D rb2D;
+    [SerializeField] private float rocketSpeed = 1.0f;
     [SerializeField] private float gravity  = 24.0f;
     [SerializeField] private Player player;
-    [SerializeField] private float rocketSpeed = 1.0f;
     [SerializeField] private float spawnTime;
     private Vector2? lookTowardsDirection = null;
     [SerializeField] private MisslieState currentState;
@@ -27,6 +27,7 @@ public class Missile : MonoBehaviour
     }
     void Start()
     {
+        StartCoroutine(DeathByTime());
         rb2D.AddForce(Vector2.up * upwardForce, ForceMode2D.Impulse);
         rb2D.gravityScale = gravity;
         StartCoroutine(SpawnToLockedState());
@@ -61,7 +62,6 @@ public class Missile : MonoBehaviour
     {
 
         yield return new WaitForSeconds(spawnTime);
-        Debug.Log("Object should change to current state");
         if (currentState == MisslieState.Spawn)
         {
             currentState = MisslieState.Locked;
@@ -81,5 +81,11 @@ public class Missile : MonoBehaviour
             player.TakeDamage();
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator DeathByTime()
+    {
+        yield return new WaitForSeconds(4.0f);
+        Destroy(gameObject);
     }
 }

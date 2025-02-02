@@ -38,7 +38,6 @@ public class PlayerCombat : MonoBehaviour
             {
                 IDamagable obInterface = ob.GetComponent<IDamagable>();
                 if (obInterface != null) {
-                    Debug.Log("Damage given to object");
                     obInterface.TakeDamage(damage);
                     EnemyDamagedEvent();
                 }
