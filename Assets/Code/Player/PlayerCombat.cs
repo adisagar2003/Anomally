@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    public delegate void EnemyDamaged();
-    public static event EnemyDamaged EnemyDamagedEvent;
-    [SerializeField] public float health { get; private set; } = 100.0f;
+    public float health  = 100.0f;
     [SerializeField] private float damage = 3.0f;
     [SerializeField] private float attackCooldown = .4f;
     private Player player;
-
 
     [Header("Attack")]
     [SerializeField] private GameObject attackColliderPosition;
     [SerializeField] private float attackColliderRadius;
     private bool isAttacking = false;
 
+    // event: Enemy damaged -> Camera Shake
+    public delegate void EnemyDamaged();
+    public static event EnemyDamaged EnemyDamagedEvent;
+
+    private void OnEnable()
+    {
+        Player.DamageEvent += TakeDamage;
+    }
     private void Start()
     {
         player = GetComponent<Player>();
@@ -27,7 +32,6 @@ public class PlayerCombat : MonoBehaviour
         // make a colldier
         Collider2D[] obj = Physics2D.OverlapCircleAll(attackColliderPosition.transform.position, attackColliderRadius);
 
-        // Future: Implement destructible;
         foreach(Collider2D ob in obj)
         {
             if (ob.tag == "Destructible")
@@ -36,22 +40,22 @@ public class PlayerCombat : MonoBehaviour
                 if (obInterface != null) {
                     Debug.Log("Damage given to object");
                     obInterface.TakeDamage(damage);
-                    // Apply camera shake
                     EnemyDamagedEvent();
                 }
-
             }
             
         }
-        // make it dissapear after the coroutine ends 
         StartCoroutine(AttackCoroutine());
-        // make player to idle again after waiting
-
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(attackColliderPosition.transform.position, attackColliderRadius);
+    }
+
+    private void TakeDamage(float damage)
+    {
+        health -= damage;
     }
 
     private IEnumerator AttackCoroutine()

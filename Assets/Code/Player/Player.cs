@@ -12,7 +12,8 @@ public class Player : MonoBehaviour
         Run,
         Dash,
         Attack,
-        Hurt
+        Hurt,
+        Death
     }
 
     public PlayerState currentState;
@@ -21,15 +22,19 @@ public class Player : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
     private Rigidbody2D rb2D;
-
+    private PlayerInputHandler playerInputHandler;
     // event: player got hurt
     public delegate void DamageDelegate(float damage);
     public static event DamageDelegate DamageEvent;
 
+    // event: Player is dead
+    public delegate void DeathDelegate();
+    public static event DeathDelegate DeathEvent;
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
         playerCombat = GetComponent<PlayerCombat>();
+        playerInputHandler = GetComponent<PlayerInputHandler>();
         currentState = PlayerState.Idle;
         rb2D = GetComponent<Rigidbody2D>();
     }
@@ -104,5 +109,19 @@ public class Player : MonoBehaviour
     {
         currentState = PlayerState.Hurt;
         DamageEvent(10.0f);
+        if (playerCombat.health < 0.0f)
+        {
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        // disable all input
+        // send a signal that player is dead 
+        playerInputHandler.OnDisable();
+        playerInputHandler = null;
+        Debug.Log("Player should die");
+        DeathEvent();
     }
 }

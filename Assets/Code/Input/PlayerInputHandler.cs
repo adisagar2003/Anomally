@@ -53,7 +53,7 @@ public class PlayerInputHandler : MonoBehaviour
         controls.PlayerControls.Enable();
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         controls.PlayerControls.Disable();
     }

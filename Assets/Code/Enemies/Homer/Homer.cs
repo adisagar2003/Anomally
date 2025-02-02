@@ -75,5 +75,10 @@ public class Homer : BaseEnemy
         yield return new WaitForSeconds(deathTime);
         Destroy(gameObject);
     }
+
+    public override void DisableAllAttacks()
+    {
+        currentState = HomerState.Idle;
+    }
 }
 
