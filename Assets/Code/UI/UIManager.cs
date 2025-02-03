@@ -24,7 +24,10 @@ public class UIManager : MonoBehaviour
 
     void ShowDeathUI()
     {
-        DeathUI.SetActive(true);
+        if (DeathUI)
+        {
+            DeathUI.SetActive(true);
+        }
     }
 }
 

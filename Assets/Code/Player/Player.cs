@@ -118,8 +118,8 @@ public class Player : MonoBehaviour
     public void Death()
     {
         // disable all input
-        // send a signal that player is dead 
-        playerInputHandler.OnDisable();
+        // send a signal that player is dead
+        if (playerInputHandler != null) playerInputHandler.OnDisable();
         playerInputHandler = null;
         Debug.Log("Player should die");
         DeathEvent();

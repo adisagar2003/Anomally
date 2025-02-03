@@ -50,10 +50,7 @@ public class Missile : MonoBehaviour
                 lookTowardsDirection = (player.transform.position - transform.position).normalized;
             }
 
-
-            rb2D.AddTorque(30);
-            if (currentState != MisslieState.Thrown)   rb2D.AddForce((Vector2)(lookTowardsDirection * rocketSpeed), ForceMode2D.Impulse);
-            currentState = MisslieState.Thrown;
+            rb2D.velocity = (Vector2) (lookTowardsDirection * rocketSpeed);
 
         }
     }

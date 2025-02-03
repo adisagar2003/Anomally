@@ -20,7 +20,7 @@ public class HealthBar : MonoBehaviour
 
     private void OnDisable()
     {
-        
+        Player.DamageEvent -= TakeDamage;
     }
 
     private void TakeDamage(float damage)

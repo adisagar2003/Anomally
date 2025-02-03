@@ -13,13 +13,7 @@ public class PlayerInputHandler : MonoBehaviour
     
     void Awake()
     {
-        controls = new InputMaster();
-        controls.PlayerControls.Move.performed += ctx => xInput = ctx.ReadValue<Vector2>();
-        controls.PlayerControls.Move.canceled += ctx => xInput = Vector2.zero;
-        controls.PlayerControls.Jump.performed += ctx => JumpAction();
-        controls.PlayerControls.Dash.performed += ctx => DashAction();
-        controls.PlayerControls.Fire.performed += ctx => AttackAction();
-       
+
     }
 
     private void AttackAction()
@@ -50,11 +44,22 @@ public class PlayerInputHandler : MonoBehaviour
     }
     private void OnEnable()
     {
+
+        controls.PlayerControls.Move.performed += ctx => xInput = ctx.ReadValue<Vector2>();
+        controls.PlayerControls.Move.canceled += ctx => xInput = Vector2.zero;
+        controls.PlayerControls.Jump.performed += ctx => JumpAction();
+        controls.PlayerControls.Dash.performed += ctx => DashAction();
+        controls.PlayerControls.Fire.performed += ctx => AttackAction();
         controls.PlayerControls.Enable();
     }
 
     public void OnDisable()
     {
+        controls.PlayerControls.Move.performed -= ctx => xInput = ctx.ReadValue<Vector2>();
+        controls.PlayerControls.Move.canceled  -= ctx => xInput = Vector2.zero;
+        controls.PlayerControls.Jump.performed -= ctx => JumpAction();
+        controls.PlayerControls.Dash.performed -= ctx => DashAction();
+        controls.PlayerControls.Fire.performed -= ctx => AttackAction();
         controls.PlayerControls.Disable();
     }
 }

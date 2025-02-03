@@ -13,6 +13,12 @@ public abstract class BaseEnemy : MonoBehaviour, IDamagable
     {
         Player.DeathEvent += DisableAllAttacks;
     }
+
+    protected void OnDisable()
+    {
+        Player.DeathEvent -= DisableAllAttacks;
+    }
+
     public virtual void TakeDamage(float amount)
     {
         
