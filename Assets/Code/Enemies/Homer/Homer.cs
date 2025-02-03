@@ -53,6 +53,12 @@ public class Homer : BaseEnemy
         currentState = HomerState.Attack;
         sprite.color = Color.white;
     }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     public override void Attack()
     {
         

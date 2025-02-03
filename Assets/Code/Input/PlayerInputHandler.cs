@@ -13,7 +13,7 @@ public class PlayerInputHandler : MonoBehaviour
     
     void Awake()
     {
-
+        controls = new InputMaster();
     }
 
     private void AttackAction()

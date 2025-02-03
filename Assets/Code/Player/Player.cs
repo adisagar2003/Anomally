@@ -124,4 +124,9 @@ public class Player : MonoBehaviour
         Debug.Log("Player should die");
         DeathEvent();
     }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
 }
