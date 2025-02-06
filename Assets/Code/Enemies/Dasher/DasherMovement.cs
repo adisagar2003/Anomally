@@ -8,6 +8,7 @@ public class DasherMovement : MonoBehaviour
     private float direction = -1;
     [SerializeField] private float speed = -1;
     private Player player;
+    private Quaternion lookRotation;
     // Start is called before the first frame update
     void Start()
     {
