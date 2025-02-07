@@ -6454,6 +6454,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826694817}
   m_CullTransparentMesh: 1
+--- !u!1 &831920690
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 831920691}
+  m_Layer: 0
+  m_Name: Eye
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &831920691
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831920690}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.49, y: 0.34, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1166223412}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &851550170
 GameObject:
   m_ObjectHideFlags: 0
@@ -6925,11 +6956,12 @@ Transform:
   m_GameObject: {fileID: 1166223411}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.75, y: -3.14, z: 0}
+  m_LocalPosition: {x: 5.73, y: -3.14, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1269946316}
+  - {fileID: 831920691}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1166223413
@@ -6948,6 +6980,8 @@ MonoBehaviour:
   damage: 10
   attackCooldown: 0.5
   hurtCooldown: 1.2
+  eye: {fileID: 831920690}
+  attackDistance: 3.71
 --- !u!70 &1166223414
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -6998,7 +7032,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 9.99
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -7022,7 +7056,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4e22d9af9fc207409d7677fb8afc065, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 1.2
+  recoilSpeed: 10
 --- !u!1 &1185310383
 GameObject:
   m_ObjectHideFlags: 0
@@ -7791,7 +7826,7 @@ Transform:
   m_GameObject: {fileID: 1618527379}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.5074215, y: 1.9334642, z: -10.017049}
+  m_LocalPosition: {x: -9.343213, y: 1.933654, z: -10.017049}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8577,7 +8612,7 @@ Transform:
   m_GameObject: {fileID: 1978035304}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4297371, y: -4.6483855, z: -10.114067}
+  m_LocalPosition: {x: -0.2655325, y: -4.6483855, z: -10.114067}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
