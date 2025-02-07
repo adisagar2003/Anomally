@@ -74,27 +74,7 @@ public class Dasher : BaseEnemy
 
     void FixedUpdate()
     {
-        switch (currentState)
-        {
-            default:
-            case DasherState.Patrol:
-                // get random x position from 10-20 distance,
-                Debug.Log("Dasher should Patrol");
-                DetectPlayer();
-                break;
-            case DasherState.Attack:
-                StartCoroutine(AttackCoroutine());
-                
-                break;
-            case DasherState.Alert:
-                dasherMovement.ChasePlayer();
-                DetectPlayer();
-                break;
-        }
-
-        // raycasting to check if player is visible 
         
-
     }
 
     private void DetectPlayer()
