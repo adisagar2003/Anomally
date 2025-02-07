@@ -26,7 +26,7 @@ public class Dasher : BaseEnemy
 
     private void OnDrawGizmos()
     {
-        Debug.DrawRay(eye.transform.position, Vector2.left * attackDistance);
+        Debug.DrawRay(eye.transform.position, new Vector2(eye.transform.rotation.y,0) * attackDistance);
     }
 
     private void OnEnable()
@@ -60,6 +60,16 @@ public class Dasher : BaseEnemy
         health -= amount;
         // recoil backwards 
         dasherMovement.RecoilBack();
+
+        if (health < 0)
+        {
+            Death();
+        }
+    }
+
+    public override void Death()
+    {
+        base.Death();
     }
 
     void FixedUpdate()

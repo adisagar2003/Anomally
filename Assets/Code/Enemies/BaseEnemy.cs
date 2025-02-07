@@ -30,6 +30,6 @@ public abstract class BaseEnemy : MonoBehaviour, IDamagable
     public abstract void DisableAllAttacks();
     public virtual void Death()
     {
-
+        Destroy(gameObject);
     }
 }
