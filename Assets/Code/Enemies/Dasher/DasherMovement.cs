@@ -10,9 +10,10 @@ public class DasherMovement : MonoBehaviour
     private float direction = -1;
     [SerializeField] private float speed = 10;
     [SerializeField] private float recoilSpeed= 10;
-    [SerializeField] private float dashSpeed = 20.0f;
+    [SerializeField] private float dashSpeed;
     // minimum distance to stop dashing at from the player
     [SerializeField] private float targetReachedMinDistance = 0.2f;
+
     private Vector3 targetPosition;
     bool isMovingToPosition = false;
 
@@ -28,6 +29,11 @@ public class DasherMovement : MonoBehaviour
         this.targetPosition = targetPosition;
     }
 
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player")) isMovingToPosition = false;
+    }
     public void ChasePlayer()
     {
 
@@ -41,17 +47,20 @@ public class DasherMovement : MonoBehaviour
             Debug.Log("Moving Towards the position");
             // only changing the x value 
             Vector3 newPosition = new Vector3(
-                Mathf.Lerp(transform.position.x, targetPosition.x, Time.deltaTime * dashSpeed)
+                Mathf.Lerp(transform.position.x, targetPosition.x + .4f, Time.deltaTime * dashSpeed)
                 ,transform.position.y
                 ,transform.position.z);
 
             rb2D.MovePosition(newPosition);
-            if (Vector3.Distance(targetPosition, transform.position) < 0.1)
+
+            if (Mathf.Abs(Vector3.Distance(targetPosition, transform.position)) < 0.91f)
             {
                 Debug.Log("```Reached Destination`````");
                 isMovingToPosition = false;
 
             }
         }
+
+       
     }
 }
