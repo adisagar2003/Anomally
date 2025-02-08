@@ -16,7 +16,7 @@ public class Dasher : BaseEnemy
         Hurt
     }
 
-    private DasherState currentState;
+    [SerializeField] private DasherState currentState;
 
     void Start()
     {
@@ -58,8 +58,7 @@ public class Dasher : BaseEnemy
     public override void TakeDamage(float amount)
     {
         health -= amount;
-        // recoil backwards 
-        dasherMovement.RecoilBack();
+      
 
         if (health < 0)
         {
@@ -88,13 +87,22 @@ public class Dasher : BaseEnemy
         }
     }
 
-    // Attack combat
-    private IEnumerator AttackCoroutine()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        currentState = DasherState.Attacking;
-        // future... dash functionality.
-        yield return new WaitForSeconds(1.3f);
-        currentState = DasherState.Alert;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            StartAttack(collision.transform.position);   
+        }
+    }
+
+    private void StartAttack(Vector3 playerCurrentPosition)
+    {
+        //if (currentState != DasherState.Hurt && currentState != DasherState.Attack)
+        //{
+            currentState = DasherState.Attack;
+            // dash towards the last player's x location listed
+            dasherMovement.DashTowardsPlayer(playerCurrentPosition);
+        //}
     }
 
 
