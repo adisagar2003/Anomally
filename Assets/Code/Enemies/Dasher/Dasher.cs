@@ -6,10 +6,11 @@ public class Dasher : BaseEnemy
 {
     [SerializeField] private GameObject eye;
     [SerializeField] private float attackDistance = 1.35f;
+    private Player player;
     private DasherMovement dasherMovement;
     public enum DasherState
     {
-        Patrol, 
+        Idle, 
         Alert,
         Attack,
         Attacking,
@@ -20,10 +21,18 @@ public class Dasher : BaseEnemy
 
     void Start()
     {
-        currentState = DasherState.Patrol;
+        player = FindFirstObjectByType<Player>();
+        currentState = DasherState.Idle;
         dasherMovement = GetComponent<DasherMovement>();
+        StartCoroutine(Spawn());
     }
 
+
+    public IEnumerator Spawn()
+    {
+        yield return new WaitForSeconds(1.4f);
+        currentState = DasherState.Alert;
+    }
     private void OnDrawGizmos()
     {
         Debug.DrawRay(eye.transform.position, new Vector2(eye.transform.rotation.y,0) * attackDistance);
@@ -57,13 +66,18 @@ public class Dasher : BaseEnemy
 
     public override void TakeDamage(float amount)
     {
-        health -= amount;
-      
-
+        health -= 5f;
+        
         if (health < 0)
         {
             Death();
+        } else
+        {
+            Debug.Log("Knockback applied");
+            dasherMovement.Knockback((player.transform.position-transform.position).normalized);
         }
+
+        
     }
 
     public override void Death()
@@ -73,7 +87,15 @@ public class Dasher : BaseEnemy
 
     void FixedUpdate()
     {
-        
+        StartChase();
+    }
+
+    public void StartChase()
+    {
+        if (currentState == DasherState.Alert)
+        {
+            dasherMovement.ChasePlayer();
+        }
     }
 
     private void DetectPlayer()
@@ -87,15 +109,13 @@ public class Dasher : BaseEnemy
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            StartAttack(collision.transform.position);   
-        }
-    }
 
-    private void StartAttack(Vector3 playerCurrentPosition)
+
+    public void GetHurt()
+    {
+        Debug.Log("Player has hurt dasher");
+    }
+    public void StartAttack(Vector3 playerCurrentPosition)
     {
         //if (currentState != DasherState.Hurt && currentState != DasherState.Attack)
         //{

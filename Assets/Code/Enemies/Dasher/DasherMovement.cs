@@ -14,13 +14,16 @@ public class DasherMovement : MonoBehaviour
     // minimum distance to stop dashing at from the player
     [SerializeField] private float targetReachedMinDistance = 0.2f;
 
+    [Header("Combat")]
+    [SerializeField] private float knockbackStrength = 24.0f;
+
     private Vector3 targetPosition;
     bool isMovingToPosition = false;
 
     private void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        player = GameObject.FindAnyObjectByType<Player>();
+        player = FindAnyObjectByType<Player>();
     }
     public void DashTowardsPlayer(Vector3 targetPosition)
     {
@@ -36,31 +39,57 @@ public class DasherMovement : MonoBehaviour
     }
     public void ChasePlayer()
     {
-
+        
+        Vector2 newPosition = Vector2.Lerp(new Vector2(transform.position.x, transform.position.y), new Vector2(player.transform.position.x,transform.position.y), Time.deltaTime * speed);
+       
+        rb2D.MovePosition(newPosition);
     }
 
     private void FixedUpdate()
     {
-        if (Math.Abs(targetPosition.x - transform.position.x) > this.targetReachedMinDistance && isMovingToPosition)
+        DashDasherTowardsObject();
+    }
+
+    
+    private void DashDasherTowardsObject()
+    {
+        if (XDistanceTowardsTargetPosition() > this.targetReachedMinDistance && isMovingToPosition)
         {
-            Debug.Log(Math.Abs(targetPosition.x - transform.position.x));
-            Debug.Log("Moving Towards the position");
             // only changing the x value 
             Vector3 newPosition = new Vector3(
                 Mathf.Lerp(transform.position.x, targetPosition.x + .4f, Time.deltaTime * dashSpeed)
-                ,transform.position.y
-                ,transform.position.z);
+                , transform.position.y
+                , transform.position.z);
 
             rb2D.MovePosition(newPosition);
 
             if (Mathf.Abs(Vector3.Distance(targetPosition, transform.position)) < 0.91f)
             {
                 Debug.Log("```Reached Destination`````");
+               
                 isMovingToPosition = false;
+                
 
             }
         }
+    }
 
-       
+    [ContextMenu("Knockback")]
+    public void KnockbackFromRight()
+    {
+        Knockback(Vector2.left); // Example: Apply knockback to the left
+    }
+
+    public void Knockback(Vector2 knockbackDirection)
+    {
+        rb2D.AddForce(knockbackDirection * knockbackStrength, ForceMode2D.Force);
+    }
+
+
+
+    
+    private float XDistanceTowardsTargetPosition()
+    {
+        return Math.Abs(targetPosition.x - transform.position.x);
     }
 }

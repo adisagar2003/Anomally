@@ -26,10 +26,13 @@ public class Player : MonoBehaviour
     // event: player got hurt
     public delegate void DamageDelegate(float damage);
     public static event DamageDelegate DamageEvent;
-
+        
     // event: Player is dead
     public delegate void DeathDelegate();
     public static event DeathDelegate DeathEvent;
+
+    // For debugging purpodses
+    [SerializeField] private string debugData = "";
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
@@ -44,12 +47,20 @@ public class Player : MonoBehaviour
         StateManagementPhysics();
     }
 
+    private void Update()
+    {
+        debugData = $"Hello," +
+            $" {playerCombat.health} \n Speed: {rb2D.velocity.ToString()}" +
+            $" \n currentState: {currentState.ToString()} " +
+            $"\n canDash: {playerMovement.canDash}";
+    }
+
     private void StateManagementPhysics()
     {
         if (playerMovement.isOnGround)
         {
-            if (rb2D.velocity != Vector2.zero && currentState != PlayerState.Dash) currentState = Player.PlayerState.Run;
-            if (rb2D.velocity == Vector2.zero && currentState != PlayerState.Dash) currentState = Player.PlayerState.Idle;
+            if (rb2D.velocity != Vector2.zero && currentState != PlayerState.Dash && currentState != PlayerState.Attack) currentState = Player.PlayerState.Run;
+            if (rb2D.velocity == Vector2.zero && currentState != PlayerState.Dash && currentState != PlayerState.Attack) currentState = Player.PlayerState.Idle;
         }
         else if (!playerMovement.isOnGround)
         {
@@ -76,12 +87,12 @@ public class Player : MonoBehaviour
     {
         if (currentState == PlayerState.Idle || currentState == PlayerState.Run)
         {
-            currentState = PlayerState.Dash;
             playerMovement.Dash();
             StartCoroutine(DashCooldown());
         }
     }
 
+    // Future migration: to PlayerMovement.cs
     private IEnumerator DashCooldown()
     {
         yield return new WaitForSeconds(playerMovement.dashCooldown);
@@ -94,15 +105,20 @@ public class Player : MonoBehaviour
     // Combat 
     public void Attack()
     {
-        // start attack only if is in ground and running or idle
-        if (currentState == PlayerState.Idle || currentState == PlayerState.Run)
-        {
-            currentState = PlayerState.Attack;
-            // player movement: slight upward push 
-            playerMovement.MoveForwardByAttack();
-            // player combat: Implement collisionspheres.
-            playerCombat.Attack();
-        }
+        //// start attack only if is in ground and running or idle
+        //if (currentState == PlayerState.Idle || currentState == PlayerState.Run)
+        //{
+        //    currentState = PlayerState.Attack;
+        //    // player movement: slight upward push 
+        //    playerMovement.MoveForwardByAttack();
+        //    // player combat: Implement collisionspheres.
+        //    playerCombat.Attack();
+        //}
+
+        currentState = PlayerState.Attack;
+        playerCombat.Attack();
+
+
     }
 
     public void TakeDamage()

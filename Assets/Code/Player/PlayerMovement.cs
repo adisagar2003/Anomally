@@ -6,14 +6,17 @@ public class PlayerMovement : MonoBehaviour
 {
     public Player player;
 
+
     [Header("Movement Controls")]
     [SerializeField] private float playerSpeed = 10.0f;
     private float facingDirection = 1.0f;
+    // Dashing
     [SerializeField] private float dashIntensity = 10.0f;
     [SerializeField] private float dashLerpTime = 10.0f;
     public float dashCooldown = 1.4f;
     [SerializeField] private float maxSpeed = 60.0f;
-
+    public bool canDash { get; private set; } = true;
+    [SerializeField] private float canDashAgainAfter = 2.2f;
     [Header("Jumping")]
     [SerializeField] private float gravityWhileFalling = 56.0f;
     public float gravity { get; private set; } = 24.0f;
@@ -42,6 +45,10 @@ public class PlayerMovement : MonoBehaviour
         HandleGravityScale();
     }
 
+
+    private void Update()
+    {
+    }
     public void IsOnGround()
     {
        if (Physics2D.Raycast(raycastOriginPosition.transform.position, -transform.up, raycastDistance,layerMask))
@@ -132,8 +139,18 @@ public class PlayerMovement : MonoBehaviour
 
     public void Dash()
     {
+        if (canDash == false) return;
+        player.currentState = Player.PlayerState.Dash;
         rb2D.gravityScale = 0;
         rb2D.velocity = new Vector2(dashIntensity * facingDirection, 0);
+        canDash = false;
+        StartCoroutine(DashCooldown());
+    }
+
+    public IEnumerator DashCooldown()
+    {
+        yield return new WaitForSeconds(canDashAgainAfter);
+        canDash = true;
     }
 
 }
