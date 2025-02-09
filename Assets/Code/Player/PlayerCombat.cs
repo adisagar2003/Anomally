@@ -15,7 +15,7 @@ public class PlayerCombat : MonoBehaviour
     private bool isAttacking = false;
 
     // event: Enemy damaged -> Camera Shake
-    public delegate void EnemyDamaged();
+    public delegate void EnemyDamaged();    
     public static event EnemyDamaged EnemyDamagedEvent;
 
     private void OnEnable()
@@ -49,11 +49,13 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (player == null) return;
         if (player.currentState == Player.PlayerState.Attack)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(attackColliderPosition.transform.position, attackColliderRadius);
         }
+
     }
 
     private void TakeDamage(float damage)

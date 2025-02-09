@@ -140,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
     public void Dash()
     {
         if (canDash == false) return;
-        player.currentState = Player.PlayerState.Dash;
+        player.currentState = Player.PlayerState.Dash;  
         rb2D.gravityScale = 0;
         rb2D.velocity = new Vector2(dashIntensity * facingDirection, 0);
         canDash = false;
