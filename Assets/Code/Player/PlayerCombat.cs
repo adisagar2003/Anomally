@@ -49,7 +49,11 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(attackColliderPosition.transform.position, attackColliderRadius);
+        if (player.currentState == Player.PlayerState.Attack)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackColliderPosition.transform.position, attackColliderRadius);
+        }
     }
 
     private void TakeDamage(float damage)
