@@ -9,6 +9,7 @@ public class DasherMovement : MonoBehaviour
     private Rigidbody2D rb2D;
     private float direction = -1;
     [SerializeField] private float speed = 10;
+    private RunnerMovement runnerMovement;
     [SerializeField] private float recoilSpeed= 10;
     [SerializeField] private float dashSpeed;
     // minimum distance to stop dashing at from the player
@@ -24,6 +25,8 @@ public class DasherMovement : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         player = FindAnyObjectByType<Player>();
+        runnerMovement = GetComponent<RunnerMovement>();
+        
     }
     public void DashTowardsPlayer(Vector3 targetPosition)
     {

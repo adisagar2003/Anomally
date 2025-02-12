@@ -32,6 +32,11 @@ public class RunnerMovement : MonoBehaviour
         rb2D.velocity = new Vector2(directionTowardsPlayer.x * runner.speed, rb2D.velocity.y);
     }
 
+    public float GetRunnerSpeed()
+    {
+        return this.runnerSpeed;
+    }
+
     public void StopRunner()
     {
         rb2D.velocity = Vector2.zero;
@@ -59,12 +64,8 @@ public class RunnerMovement : MonoBehaviour
         
         if (chargeLocation == null) return;
         newLocationToGo = chargeLocation;
-        Vector2 velocity = rb2D.velocity;
-        Vector2 newPosition = Vector2.SmoothDamp(transform.position, (Vector2) chargeLocation,ref velocity,Time.deltaTime * runner.speed,runnerSpeed);
-        // eliminate y value
         Vector2 chargeDirection = ((Vector2)(chargeLocation - transform.position)).normalized;
-
-        newPosition.y = initialYValue;
+        
         rb2D.velocity = new Vector2(chargeDirection.x * runnerChargeSpeed, rb2D.velocity.y);
     }
 

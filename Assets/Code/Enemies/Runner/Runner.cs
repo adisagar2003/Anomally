@@ -26,13 +26,14 @@ public class Runner : BaseEnemy
 
     [SerializeField] public RunnerState currentState { get; private set; } = RunnerState.Idle;
 
-    public float speed = 4.0f;
+    public float speed;
     private RunnerMovement runnerMovement;
     // private stuff
     private Player player;
     private bool isInDetectableArea;
 
     [SerializeField] private float spawnTime;
+    [SerializeField] private float attackCooldown = 1.2f;
     // Debug 
     [SerializeField] private string debugString;
     public bool flipped;
@@ -41,6 +42,7 @@ public class Runner : BaseEnemy
         this.player = FindFirstObjectByType<Player>();
         runnerMovement = GetComponent<RunnerMovement>();
         StartCoroutine(SpawnStart());
+        speed = runnerMovement.GetRunnerSpeed();
     }
 
 
@@ -53,7 +55,7 @@ public class Runner : BaseEnemy
     {
         flipped = runnerMovement.flipped;
         debugString = $"Health: {health}\n" +
-            $"Speed: {speed}\n" +
+            $"Speed: {runnerMovement.GetRunnerSpeed()}\n" +
             $"In Detectable Area: {isInDetectableArea}\n" +
             $"Current State: {currentState}\n" +
             $"\t`  ```Runner Movement```\t \n" +
@@ -62,7 +64,7 @@ public class Runner : BaseEnemy
 
     private IEnumerator SpawnStart()
     {
-        yield return new WaitForSeconds(1.4f);
+        yield return new WaitForSeconds(attackCooldown);
         // Now runner will chase the player
         if (isInDetectableArea)
         {
@@ -85,15 +87,16 @@ public class Runner : BaseEnemy
         // Charge player.
         runnerMovement.ChargeTo(locationOfCollision);
         // new logic: If player is not found after hitting, then chase or attack again
+
         StartCoroutine(AfterAttack());
-        runnerMovement.StopRunner();
+    
        
     }
 
     public IEnumerator AfterAttack()
     {
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(attackCooldown);
         if (isInDetectableArea) AttackAgainTowardsPlayer();
         else ChasePlayer();
 
