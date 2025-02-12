@@ -156,9 +156,21 @@ public class PlayerMovement : MonoBehaviour
         canDash = true;
     }
 
-    public void KnockBack(Vector2 direction)
+    public void KnockBack(Vector2 direction, bool side)
     {
-        rb2D.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
+
+        StartCoroutine(StopTheVelocity());
+        if (side == true)
+        {
+            rb2D.velocity = new Vector2(1*knockbackForce, 0);
+        }
+
+        else if (side == false)
+        {
+            rb2D.velocity = new Vector2(-1* knockbackForce, 0);
+        }
+        
+
     }
 
     // For debugging purposes
@@ -170,11 +182,15 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator StopTheVelocity()
     {
-        isKnockingBack = true;
+        //float gravscale = rb2d.gravityscale;
+        //rb2d.gravityscale = 0;
+        //isknockingback = true;a
         yield return new WaitForSeconds(knockbackTime);
         Debug.Log("Back Again");
         rb2D.velocity = Vector2.zero;
-        isKnockingBack = false;
+        //rb2D.velocity = Vector2.zero;
+        //isKnockingBack = false;
+        //rb2D.gravityScale = gravScale;
        
     }
 

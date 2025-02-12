@@ -30,9 +30,11 @@ public class Runner : BaseEnemy
     // private stuff
     private Player player;
     private bool isInDetectableArea;
+
     [SerializeField] private float spawnTime;
     // Debug 
     [SerializeField] private string debugString;
+    public bool flipped;
     private void Start()
     {
         this.player = FindFirstObjectByType<Player>();
@@ -40,12 +42,15 @@ public class Runner : BaseEnemy
         StartCoroutine(SpawnStart());
     }
 
+
+    
     public void SetIsDetectableArea(bool isDetectable)
     {
         this.isInDetectableArea = isDetectable;
     }
     private void Update()
     {
+        flipped = runnerMovement.flipped;
         debugString = $"Health: {health}\n" +
             $"Speed: {speed}\n" +
             $"In Detectable Area: {isInDetectableArea}\n" +
@@ -84,7 +89,8 @@ public class Runner : BaseEnemy
 
     public void GiveDamageToPlayer(Vector2 directionOfHurt)
     {
-        player.TakeDamage(directionOfHurt);
+        player.TakeDamage(directionOfHurt, flipped);
+
     }
 
     public void SetState(RunnerState state)
@@ -99,7 +105,6 @@ public class Runner : BaseEnemy
 
     public override void DisableAllAttacks()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void Attack()

@@ -9,9 +9,11 @@ public class RunnerMovement : MonoBehaviour
     private Runner runner;
 
     private float initialYValue;
-    [SerializeField] private float runnerSpeed = 20.0f;
+    [SerializeField] private float runnerSpeed = 14.0f;
+    [SerializeField] private float runnerChargeSpeed = 14.0f;
     [SerializeField] private Transform debugChargeLocation;
     private Vector2? newLocationToGo = null;
+    public bool flipped = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,10 +26,25 @@ public class RunnerMovement : MonoBehaviour
     public void RunnerMovementChasePlayer()
     {
         if (player == null) return;
-        Vector2 newPosition = Vector2.Lerp(transform.position, player.transform.position, Time.deltaTime * runner.speed);
         // eliminate y value
-        newPosition.y = initialYValue; 
-        rb2D.MovePosition(newPosition);
+        Vector2 directionTowardsPlayer = (player.transform.position - transform.position).normalized;
+        // Set only the X velocity while keeping the Y velocity unchanged
+        rb2D.velocity = new Vector2(directionTowardsPlayer.x * runner.speed, rb2D.velocity.y);
+    }
+
+    private void HandleRunnerFlip()
+    {
+        if (rb2D == null) return;
+        if (rb2D.velocity.x < 0)
+        {
+            flipped = false;
+            runner.transform.localScale = new Vector3(Mathf.Abs(runner.transform.localScale.x) * -1, runner.transform.localScale.y, runner.transform.localScale.z);
+        }
+        else if (rb2D.velocity.x > 0)
+        {
+            flipped = true;
+            runner.transform.localScale = new Vector3(Mathf.Abs(runner.transform.localScale.x), runner.transform.localScale.y, runner.transform.localScale.z);
+        }
     }
 
     
@@ -41,8 +58,10 @@ public class RunnerMovement : MonoBehaviour
         Vector2 velocity = rb2D.velocity;
         Vector2 newPosition = Vector2.SmoothDamp(transform.position, (Vector2) chargeLocation,ref velocity,Time.deltaTime * runner.speed,runnerSpeed);
         // eliminate y value
+        Vector2 chargeDirection = ((Vector2)(chargeLocation - transform.position)).normalized;
+
         newPosition.y = initialYValue;
-        rb2D.MovePosition(newPosition);
+        rb2D.velocity = new Vector2(chargeDirection.x * runnerChargeSpeed, rb2D.velocity.y);
     }
 
     // For Debug 
@@ -50,8 +69,13 @@ public class RunnerMovement : MonoBehaviour
     public void ChangeToDebugLocation()
     {
         Vector2 velocity = rb2D.velocity;
-        Vector2 newPosition = Vector2.SmoothDamp(transform.position, debugChargeLocation.position, ref velocity, Time.deltaTime * runner.speed, runnerSpeed);
-        rb2D.MovePosition(newPosition);
+        Vector2 chargeDirection = ((Vector2)(debugChargeLocation.position - transform.position)).normalized;
+        rb2D.velocity = new Vector2(chargeDirection.x * runnerChargeSpeed, rb2D.velocity.y);
+    }
+
+    private void Update()
+    {
+
     }
 
     private void FixedUpdate()
@@ -65,6 +89,9 @@ public class RunnerMovement : MonoBehaviour
         {
             ChargeTo(newLocationToGo);
         }
+
+        HandleRunnerFlip();
+
     }
 
 }

@@ -55,12 +55,20 @@ public class Player : MonoBehaviour
             $"\n canDash: {playerMovement.canDash}";
     }
 
+
+
     private void StateManagementPhysics()
     {
         if (playerMovement.isOnGround)
         {
-            if (rb2D.velocity != Vector2.zero && currentState != PlayerState.Dash && currentState != PlayerState.Attack) currentState = Player.PlayerState.Run;
-            if (rb2D.velocity == Vector2.zero && currentState != PlayerState.Dash && currentState != PlayerState.Attack) currentState = Player.PlayerState.Idle;
+            if (rb2D.velocity != Vector2.zero
+                && currentState != PlayerState.Dash
+                && currentState != PlayerState.Attack
+                && currentState != PlayerState.Hurt
+                ) {
+                currentState = Player.PlayerState.Run;
+                }
+            else if (rb2D.velocity == Vector2.zero && currentState != PlayerState.Dash && currentState != PlayerState.Attack) currentState = Player.PlayerState.Idle;
         }
         else if (!playerMovement.isOnGround)
         {
@@ -131,8 +139,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void TakeDamage(Vector2 hurtDirection)
+    public void TakeDamage(Vector2 hurtDirection, bool flipped)
     {
+        Debug.Log("Parameter: " + flipped);
         Debug.Log("Player took damage at" + hurtDirection.ToString());
         currentState = PlayerState.Hurt;
         DamageEvent(10.0f);
@@ -142,13 +151,12 @@ public class Player : MonoBehaviour
         }
 
         // knock player back towards hurt Direction
-        playerMovement.KnockBack(new Vector2(hurtDirection.x, 0));
+        playerMovement.KnockBack(new Vector2(hurtDirection.x, 0), flipped);
     }
 
     [ContextMenu("Take Damage Left")]
     public void TakeDamageLeft()
     {
-        Debug.Log("Player took damage");
         currentState = PlayerState.Hurt;
         DamageEvent(10.0f);
         if (playerCombat.health < 0.0f)
@@ -157,7 +165,7 @@ public class Player : MonoBehaviour
         }
 
         // knock player back towards hurt Direction
-        playerMovement.KnockBack(Vector2.left);
+        playerMovement.KnockBack(Vector2.left,false);
     }
 
     public void Death()

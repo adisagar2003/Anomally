@@ -17,9 +17,19 @@ public class RunnerHurtCollider : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             // direction of hurt;
-            Vector2 directionOfHurt = (transform.position - player.transform.position).normalized;
+            
+            Vector2 directionOfHurt = (player.transform.position - transform.position).normalized;
             // send a signal to runner that it hurt the player
-            runner.GiveDamageToPlayer(directionOfHurt);
+            if (runner.flipped == true)
+            {
+                Debug.Log("Give damage to player === RunnerHurtCollider.cs");
+                runner.GiveDamageToPlayer(directionOfHurt);
+            }
+            else
+            {
+                Debug.Log("Give damage to player === RunnerHurtCollider.cs on the flipped");
+                runner.GiveDamageToPlayer(directionOfHurt);
+            }
         }
     }
 }
