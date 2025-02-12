@@ -131,6 +131,35 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void TakeDamage(Vector2 hurtDirection)
+    {
+        Debug.Log("Player took damage at" + hurtDirection.ToString());
+        currentState = PlayerState.Hurt;
+        DamageEvent(10.0f);
+        if (playerCombat.health < 0.0f)
+        {
+            Death();
+        }
+
+        // knock player back towards hurt Direction
+        playerMovement.KnockBack(new Vector2(hurtDirection.x, 0));
+    }
+
+    [ContextMenu("Take Damage Left")]
+    public void TakeDamageLeft()
+    {
+        Debug.Log("Player took damage");
+        currentState = PlayerState.Hurt;
+        DamageEvent(10.0f);
+        if (playerCombat.health < 0.0f)
+        {
+            Death();
+        }
+
+        // knock player back towards hurt Direction
+        playerMovement.KnockBack(Vector2.left);
+    }
+
     public void Death()
     {
         // disable all input

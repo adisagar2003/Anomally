@@ -71,13 +71,20 @@ public class Runner : BaseEnemy
     private void ChasePlayer()
     {
         currentState = RunnerState.Chase;
-
-
+       
     }
-    public override void Attack()
+    public  void Attack(Vector2 locationOfCollision)
     {
         currentState = RunnerState.Charge;
         // Charge player.
+        runnerMovement.ChargeTo(locationOfCollision);
+
+       
+    }
+
+    public void GiveDamageToPlayer(Vector2 directionOfHurt)
+    {
+        player.TakeDamage(directionOfHurt);
     }
 
     public void SetState(RunnerState state)
@@ -95,5 +102,8 @@ public class Runner : BaseEnemy
         throw new System.NotImplementedException();
     }
 
-    
+    public override void Attack()
+    {
+        Debug.Log("Future implementation");
+    }
 }

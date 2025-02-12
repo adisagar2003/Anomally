@@ -15,8 +15,9 @@ public class RunnerPlayerDetector : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            
             runner.SetIsDetectableArea(true);
-            runner.SetState(Runner.RunnerState.Charge);
+            runner.Attack(collision.transform.position);
         }
     }
 

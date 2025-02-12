@@ -32,7 +32,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float raycastDistance;
     [SerializeField] private GameObject raycastOriginPosition;
     [SerializeField] private LayerMask layerMask;
-
+    [SerializeField] private float knockbackForce;
+    [SerializeField] private float knockbackTime = 2.0f;
+    private bool isKnockingBack = false;
     void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -43,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     {
         IsOnGround();
         HandleGravityScale();
+        KnockingBackHandle();
     }
 
 
@@ -153,4 +156,33 @@ public class PlayerMovement : MonoBehaviour
         canDash = true;
     }
 
+    public void KnockBack(Vector2 direction)
+    {
+        rb2D.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
+    }
+
+    // For debugging purposes
+    [ContextMenu("KnockBack")]
+    public void KnockBack()
+    {
+        StartCoroutine(StopTheVelocity());
+    }
+
+    public IEnumerator StopTheVelocity()
+    {
+        isKnockingBack = true;
+        yield return new WaitForSeconds(knockbackTime);
+        Debug.Log("Back Again");
+        rb2D.velocity = Vector2.zero;
+        isKnockingBack = false;
+       
+    }
+
+    private void KnockingBackHandle()
+    {
+        if (isKnockingBack)
+        {
+            rb2D.velocity = (Vector2.left * knockbackForce);
+        }
+    }
 }
