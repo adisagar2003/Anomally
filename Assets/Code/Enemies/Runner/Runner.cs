@@ -86,13 +86,14 @@ public class Runner : BaseEnemy
         runnerMovement.ChargeTo(locationOfCollision);
         // new logic: If player is not found after hitting, then chase or attack again
         StartCoroutine(AfterAttack());
+        runnerMovement.StopRunner();
        
     }
 
     public IEnumerator AfterAttack()
     {
 
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(1.5f);
         if (isInDetectableArea) AttackAgainTowardsPlayer();
         else ChasePlayer();
 

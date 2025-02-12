@@ -6,29 +6,32 @@ public class RunnerHurtCollider : MonoBehaviour
 {
     private Runner runner;
     private Player player;
+    private RunnerMovement runnerMovement;
 
     private void Start()
     {
         player = FindFirstObjectByType<Player>();
         runner = GetComponentInParent<Runner>();
+        runnerMovement = GetComponentInParent<RunnerMovement>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             // direction of hurt;
-            
+
             Vector2 directionOfHurt = (player.transform.position - transform.position).normalized;
             // send a signal to runner that it hurt the player
             if (runner.flipped == true)
             {
-                Debug.Log("Give damage to player === RunnerHurtCollider.cs");
                 runner.GiveDamageToPlayer(directionOfHurt);
+                // stop the player 
+                runnerMovement.StopRunner();
             }
             else
             {
-                Debug.Log("Give damage to player === RunnerHurtCollider.cs on the flipped");
                 runner.GiveDamageToPlayer(directionOfHurt);
+                runnerMovement.StopRunner();
             }
         }
     }

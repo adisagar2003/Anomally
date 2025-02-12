@@ -32,6 +32,10 @@ public class RunnerMovement : MonoBehaviour
         rb2D.velocity = new Vector2(directionTowardsPlayer.x * runner.speed, rb2D.velocity.y);
     }
 
+    public void StopRunner()
+    {
+        rb2D.velocity = Vector2.zero;
+    }
     private void HandleRunnerFlip()
     {
         if (rb2D == null) return;

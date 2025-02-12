@@ -141,7 +141,6 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(Vector2 hurtDirection, bool flipped)
     {
-        Debug.Log("Parameter: " + flipped);
         Debug.Log("Player took damage at" + hurtDirection.ToString());
         currentState = PlayerState.Hurt;
         DamageEvent(10.0f);
@@ -174,7 +173,6 @@ public class Player : MonoBehaviour
         // send a signal that player is dead
         if (playerInputHandler != null) playerInputHandler.OnDisable();
         playerInputHandler = null;
-        Debug.Log("Player should die");
         DeathEvent();
     }
 
