@@ -20,6 +20,7 @@ public class Runner : BaseEnemy
         Idle,
         Chase,
         Charge,
+        Attacking,
         Hurt
     }
 
@@ -78,19 +79,40 @@ public class Runner : BaseEnemy
         currentState = RunnerState.Chase;
        
     }
-    public  void Attack(Vector2 locationOfCollision)
+    public void Attack(Vector2 locationOfCollision)
     {
         currentState = RunnerState.Charge;
         // Charge player.
         runnerMovement.ChargeTo(locationOfCollision);
-
+        // new logic: If player is not found after hitting, then chase or attack again
+        StartCoroutine(AfterAttack());
        
     }
 
+    public IEnumerator AfterAttack()
+    {
+
+        yield return new WaitForSeconds(1.3f);
+        if (isInDetectableArea) AttackAgainTowardsPlayer();
+        else ChasePlayer();
+
+    }
+
+    private void AttackAgainTowardsPlayer()
+    {
+        if (isInDetectableArea)
+        {
+            if (player != null)
+            {
+                Attack(player.transform.position);
+            }
+        }
+    }
     public void GiveDamageToPlayer(Vector2 directionOfHurt)
     {
         player.TakeDamage(directionOfHurt, flipped);
-
+        currentState = RunnerState.Attacking;
+        StartCoroutine(AfterAttack());
     }
 
     public void SetState(RunnerState state)
