@@ -27,6 +27,7 @@ public class RunnerMovement : MonoBehaviour
         rb2D.MovePosition(newPosition);
     }
 
+    
     private void FixedUpdate()
     {
         if (runner.currentState == Runner.RunnerState.Chase)

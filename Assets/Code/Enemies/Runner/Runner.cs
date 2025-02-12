@@ -71,6 +71,8 @@ public class Runner : BaseEnemy
     private void ChasePlayer()
     {
         currentState = RunnerState.Chase;
+
+
     }
     public override void Attack()
     {
