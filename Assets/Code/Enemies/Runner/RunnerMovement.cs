@@ -18,6 +18,7 @@ public class RunnerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         player = FindAnyObjectByType<Player>();
         rb2D = GetComponent<Rigidbody2D>();
         runner = GetComponent<Runner>();

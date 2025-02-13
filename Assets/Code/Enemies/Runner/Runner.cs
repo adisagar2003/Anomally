@@ -27,7 +27,7 @@ public class Runner : BaseEnemy
     [SerializeField] public RunnerState currentState { get; private set; } = RunnerState.Idle;
 
     public float speed;
-    private RunnerMovement runnerMovement;
+    private RunnerMovement? runnerMovement;
     // private stuff
     private Player player;
     private bool isInDetectableArea;
@@ -39,20 +39,25 @@ public class Runner : BaseEnemy
     public bool flipped;    
     private void Start()
     {
+        if (this == null) return;
         this.player = FindFirstObjectByType<Player>();
         runnerMovement = GetComponent<RunnerMovement>();
         StartCoroutine(SpawnStart());
         speed = runnerMovement.GetRunnerSpeed();
     }
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 
 
-    
     public void SetIsDetectableArea(bool isDetectable)
     {
         this.isInDetectableArea = isDetectable;
     }
     private void Update()
     {
+        if (this == null) return;
         flipped = runnerMovement.flipped;
         debugString = $"Health: {health}\n" +
             $"Speed: {runnerMovement.GetRunnerSpeed()}\n" +
@@ -83,6 +88,11 @@ public class Runner : BaseEnemy
     }
     public void Attack(Vector2 locationOfCollision)
     {
+        if (this == null) return; // Prevents the error
+
+        if (runnerMovement == null) return; // Object has been destroyed, stop execution
+
+
         currentState = RunnerState.Charge;
         // Charge player.
         runnerMovement.ChargeTo(locationOfCollision);
@@ -139,6 +149,16 @@ public class Runner : BaseEnemy
         StartCoroutine(HurtCoroutine());
     }
 
+    public override void Death()
+
+    {
+        // Disable all scripts on this GameObject
+        foreach (MonoBehaviour script in GetComponents<MonoBehaviour>())
+        {
+            script.enabled = false;
+        }
+        base.Death();
+    }
     public IEnumerator HurtCoroutine()
     {
         yield return new WaitForSeconds(runnerMovement.GetKnockBackCooldown());

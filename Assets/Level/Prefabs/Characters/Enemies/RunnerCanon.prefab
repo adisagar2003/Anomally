@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 711971216123220022}
   - component: {fileID: 1345232915983125293}
   - component: {fileID: 3730601195996866091}
+  - component: {fileID: 5854249490295413916}
   - component: {fileID: 7330623575213718516}
   - component: {fileID: 8935010599880463015}
-  - component: {fileID: 4602961249315218637}
   - component: {fileID: 7200184238439283482}
   m_Layer: 8
   m_Name: RunnerCanon
@@ -113,6 +113,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5854249490295413916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572735034238254576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 908371872aa04a041b402cc229298c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runnerSpeed: 14
+  runnerChargeSpeed: 14
+  debugChargeLocation: {fileID: 0}
+  flipped: 0
 --- !u!114 &7330623575213718516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,22 +176,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &4602961249315218637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 572735034238254576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e3c89a13c9ac54aa4645d5e2bfd407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  runnerSpeed: 14.15
-  runnerChargeSpeed: 17.4
-  debugChargeLocation: {fileID: 0}
-  flipped: 0
 --- !u!70 &7200184238439283482
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -221,7 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7727149188107402665}
   - component: {fileID: 6650687245011457251}
-  - component: {fileID: 8565107178439085918}
+  - component: {fileID: 1366773855162093490}
   m_Layer: 0
   m_Name: DetectableArea
   m_TagString: Untagged
@@ -289,7 +289,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.51, y: 0.20637864}
   m_EdgeRadius: 0
---- !u!114 &8565107178439085918
+--- !u!114 &1366773855162093490
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -298,7 +298,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2223152063613321759}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c0e5d3ca997d944c94a6fed4b705e6a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8744fb62191a5f04c87aeb0bcd84389a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5849239497763273887
@@ -311,7 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4206518571248815671}
   - component: {fileID: 5234532885810294690}
-  - component: {fileID: 4179027491498360162}
+  - component: {fileID: 5720103319653168101}
   m_Layer: 0
   m_Name: HurtCollider
   m_TagString: Untagged
@@ -369,7 +369,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0.080141604, y: 0}
   m_Size: {x: 0.66028315, y: 1.1507794}
   m_Direction: 0
---- !u!114 &4179027491498360162
+--- !u!114 &5720103319653168101
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -378,7 +378,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5849239497763273887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89c74e01c2373bc418808e5fb844ef92, type: 3}
+  m_Script: {fileID: 11500000, guid: 03dc770887309e442ab2eed503e0b4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6867060377926084851
@@ -391,7 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 241881573691427302}
   - component: {fileID: 5150246433241126900}
-  - component: {fileID: 6790859039398953033}
+  - component: {fileID: 153752264649647351}
   m_Layer: 0
   m_Name: HitBox
   m_TagString: RunnerHurtCollider
@@ -459,7 +459,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.54595, y: 0.74190843}
   m_EdgeRadius: 0
---- !u!114 &6790859039398953033
+--- !u!114 &153752264649647351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -468,6 +468,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6867060377926084851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b9650a72858d0a4189f1e5b9ed955d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e040cbe280ef0a4f99241a62a78cd0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
