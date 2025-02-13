@@ -27,6 +27,11 @@ public class PlayerCombat : MonoBehaviour
         player = GetComponent<Player>();
     }
 
+    public float GetAttackCooldown()
+    {
+        return attackCooldown;
+    }
+
     public void Attack()
     {
         // make a colldier

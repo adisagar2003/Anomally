@@ -23,6 +23,9 @@ public class Player : MonoBehaviour
     private PlayerCombat playerCombat;
     private Rigidbody2D rb2D;
     private PlayerInputHandler playerInputHandler;
+    private PlayerAnimHandle playerAnimHandle;
+    public float hurtCooldown { get; private set; }  = 0.2f;
+    public float attackCooldown { get; private set; }
     // event: player got hurt
     public delegate void DamageDelegate(float damage);
     public static event DamageDelegate DamageEvent;
@@ -38,8 +41,10 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         playerCombat = GetComponent<PlayerCombat>();
         playerInputHandler = GetComponent<PlayerInputHandler>();
+        playerAnimHandle = GetComponent<PlayerAnimHandle>();
         currentState = PlayerState.Idle;
         rb2D = GetComponent<Rigidbody2D>();
+        attackCooldown = playerCombat.GetAttackCooldown();
     }
 
     private void FixedUpdate()
@@ -58,7 +63,9 @@ public class Player : MonoBehaviour
         debugData = $"Hello," +
             $" {playerCombat.health} \n Speed: {rb2D.velocity.ToString()}" +
             $" \n currentState: {currentState.ToString()} " +
-            $"\n canDash: {playerMovement.canDash}";
+            $"\n canDash: {playerMovement.canDash}" +
+            $"\n isOnGround: {playerMovement.isOnGround}";
+
     }
 
 
@@ -67,14 +74,19 @@ public class Player : MonoBehaviour
     {
         if (playerMovement.isOnGround)
         {
-            if (rb2D.velocity != Vector2.zero
+            // shift  state to run
+            if ((rb2D.velocity.sqrMagnitude > 0.001f)
                 && currentState != PlayerState.Dash
                 && currentState != PlayerState.Attack
                 && currentState != PlayerState.Hurt
                 ) {
                 currentState = Player.PlayerState.Run;
                 }
-            else if (rb2D.velocity == Vector2.zero && currentState != PlayerState.Dash && currentState != PlayerState.Attack) currentState = Player.PlayerState.Idle;
+            // shift state to idle
+            else if ((rb2D.velocity.sqrMagnitude < 0.001f))
+            {
+                currentState = PlayerState.Idle;
+            }
         }
         else if (!playerMovement.isOnGround)
         {
@@ -137,16 +149,19 @@ public class Player : MonoBehaviour
 
     public void TakeDamage()
     {
+        if (currentState == PlayerState.Hurt) return;
         currentState = PlayerState.Hurt;
         DamageEvent(10.0f);
         if (playerCombat.health < 0.0f)
         {
             Death();
         }
+        StartCoroutine(HurtCooldown());
     }
 
     public void TakeDamage(Vector2 hurtDirection, bool flipped)
     {
+        if (currentState == PlayerState.Hurt) return;
         Debug.Log("Player took damage at" + hurtDirection.ToString());
         currentState = PlayerState.Hurt;
         DamageEvent(10.0f);
@@ -157,11 +172,13 @@ public class Player : MonoBehaviour
 
         // knock player back towards hurt Direction
         playerMovement.KnockBack(new Vector2(hurtDirection.x, 0), flipped);
+        StartCoroutine(HurtCooldown());
     }
 
     [ContextMenu("Take Damage Left")]
     public void TakeDamageLeft()
     {
+        if (currentState == PlayerState.Hurt) return;
         currentState = PlayerState.Hurt;
         DamageEvent(10.0f);
         if (playerCombat.health < 0.0f)
@@ -171,8 +188,14 @@ public class Player : MonoBehaviour
 
         // knock player back towards hurt Direction
         playerMovement.KnockBack(Vector2.left,false);
+        StartCoroutine(HurtCooldown());
     }
 
+    private IEnumerator HurtCooldown()
+    {
+        yield return new WaitForSeconds(hurtCooldown);
+        currentState = PlayerState.Idle;
+    }
     public void Death()
     {
         // disable all input
