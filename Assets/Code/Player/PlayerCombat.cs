@@ -42,6 +42,17 @@ public class PlayerCombat : MonoBehaviour
                     EnemyDamagedEvent();
                 }
             }
+
+           if (ob.tag == "RunnerHurtCollider")
+            {
+                Runner runnerRef = ob.GetComponentInParent<Runner>();
+                if (runnerRef != null)
+                {
+                    Debug.Log("Runner is hurt");
+                    runnerRef.GetHurtByPlayer(player.GetFacingDirection());
+                    EnemyDamagedEvent();
+                }
+            }
             
         }
         StartCoroutine(AttackCoroutine());

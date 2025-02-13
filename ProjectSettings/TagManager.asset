@@ -7,6 +7,7 @@ TagManager:
   - Destructible
   - ground
   - Ground
+  - RunnerHurtCollider
   layers:
   - Default
   - TransparentFX

@@ -36,7 +36,7 @@ public class Runner : BaseEnemy
     [SerializeField] private float attackCooldown = 1.2f;
     // Debug 
     [SerializeField] private string debugString;
-    public bool flipped;
+    public bool flipped;    
     private void Start()
     {
         this.player = FindFirstObjectByType<Player>();
@@ -129,6 +129,21 @@ public class Runner : BaseEnemy
 
     }
 
+
+    public void GetHurtByPlayer(float facingDirection)
+    {
+        currentState = RunnerState.Hurt;
+        health -= 4.0f;
+        if (health < 0.0f) Death();
+        runnerMovement.KnockBack(facingDirection);
+        StartCoroutine(HurtCoroutine());
+    }
+
+    public IEnumerator HurtCoroutine()
+    {
+        yield return new WaitForSeconds(runnerMovement.GetKnockBackCooldown());
+        currentState = RunnerState.Idle;    
+    }
     public override void DisableAllAttacks()
     {
     }

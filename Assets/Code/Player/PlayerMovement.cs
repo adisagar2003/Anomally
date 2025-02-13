@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement Controls")]
     [SerializeField] private float playerSpeed = 10.0f;
-    private float facingDirection = 1.0f;
+    public float facingDirection = 1.0f;
     // Dashing
     [SerializeField] private float dashIntensity = 10.0f;
     [SerializeField] private float dashLerpTime = 10.0f;

@@ -47,6 +47,12 @@ public class Player : MonoBehaviour
         StateManagementPhysics();
     }
 
+
+    public float GetFacingDirection()
+    {
+        return playerMovement.facingDirection;
+    }
+
     private void Update()
     {
         debugData = $"Hello," +

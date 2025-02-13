@@ -7052,11 +7052,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3470865611104982124, guid: b54b42ccf74370a428b4cb1cf78d1529, type: 3}
       propertyPath: runnerSpeed
-      value: 4.85
+      value: 14.15
       objectReference: {fileID: 0}
+    - target: {fileID: 3470865611104982124, guid: b54b42ccf74370a428b4cb1cf78d1529, type: 3}
+      propertyPath: runnerChargeSpeed
+      value: 17.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470865611104982124, guid: b54b42ccf74370a428b4cb1cf78d1529, type: 3}
+      propertyPath: debugChargeLocation
+      value: 
+      objectReference: {fileID: 34106692}
     - target: {fileID: 4171856723564896221, guid: b54b42ccf74370a428b4cb1cf78d1529, type: 3}
       propertyPath: m_Name
       value: Runner
+      objectReference: {fileID: 0}
+    - target: {fileID: 5257843779411521699, guid: b54b42ccf74370a428b4cb1cf78d1529, type: 3}
+      propertyPath: speed
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5257843779411521699, guid: b54b42ccf74370a428b4cb1cf78d1529, type: 3}
+      propertyPath: attackCooldown
+      value: 1.02
       objectReference: {fileID: 0}
     - target: {fileID: 5726356159955808614, guid: b54b42ccf74370a428b4cb1cf78d1529, type: 3}
       propertyPath: m_Size.y
@@ -8713,7 +8729,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6099037479171514938, guid: 814b4ec60e6bff0428d6a03d453790e9, type: 3}
       propertyPath: knockbackTime
-      value: 1.28
+      value: 0.66
       objectReference: {fileID: 0}
     - target: {fileID: 6099037479171514938, guid: 814b4ec60e6bff0428d6a03d453790e9, type: 3}
       propertyPath: knockbackForce

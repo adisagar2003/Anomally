@@ -12,6 +12,7 @@ public class RunnerMovement : MonoBehaviour
     [SerializeField] private float runnerSpeed = 14.0f;
     [SerializeField] private float runnerChargeSpeed = 14.0f;
     [SerializeField] private Transform debugChargeLocation;
+    private float knockBackCooldown = 1.0f;
     private Vector2? newLocationToGo = null;
     public bool flipped = false;
     // Start is called before the first frame update
@@ -83,6 +84,22 @@ public class RunnerMovement : MonoBehaviour
 
     }
 
+    public void KnockBack(float direction)
+    {
+        rb2D.velocity = direction * new Vector2(1,0);
+        StartKnockBackCoroutine();
+    }
+
+    public IEnumerator StartKnockBackCoroutine()
+    {
+        yield return new WaitForSeconds(knockBackCooldown);
+        rb2D.velocity = Vector2.zero;
+    }
+
+    public float GetKnockBackCooldown()
+    {
+        return knockBackCooldown;
+    }
     private void FixedUpdate()
     {
         if (runner.currentState == Runner.RunnerState.Chase)
