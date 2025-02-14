@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7330623575213718516}
   - component: {fileID: 8935010599880463015}
   - component: {fileID: 7200184238439283482}
+  - component: {fileID: 5862613091710464312}
   m_Layer: 8
   m_Name: RunnerCanon
   m_TagString: Enemy
@@ -211,6 +212,18 @@ CapsuleCollider2D:
   m_Offset: {x: -0.0028009415, y: 0.0035806498}
   m_Size: {x: 0.47008133, y: 0.81358516}
   m_Direction: 0
+--- !u!114 &5862613091710464312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572735034238254576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f38b02d9b53ce241bd22bba461f3669, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2223152063613321759
 GameObject:
   m_ObjectHideFlags: 0

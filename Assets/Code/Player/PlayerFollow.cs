@@ -10,7 +10,7 @@ public class PlayerFollow : MonoBehaviour
     [SerializeField] private Player player;
     void Start()
     {
-        player = GameObject.FindFirstObjectByType<Player>();
+      
     }
 
     // Update is called once per frame
