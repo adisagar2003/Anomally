@@ -15,6 +15,7 @@ public class CameraShake : MonoBehaviour
     private void OnEnable()
     {
         PlayerCombat.EnemyDamagedEvent += ShakeCamera;
+        Player.PlayerDamageEvent += ShakeCamera;
     }
 
 
@@ -59,4 +60,12 @@ public class CameraShake : MonoBehaviour
         shakeTime = 0.9f;
     }
 
+    // for when player damaged
+    public void ShakeCamera(float damage)
+    {
+        if (currentState != CameraState.Idle) return;
+        currentState = CameraState.Shake;
+        cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 1;
+        shakeTime = 0.9f;
+    }
 }

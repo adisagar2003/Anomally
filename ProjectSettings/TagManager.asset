@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - RunnerHurtCollider
   - Enemy
+  - HurtCollider
   layers:
   - Default
   - TransparentFX

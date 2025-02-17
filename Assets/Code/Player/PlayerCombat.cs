@@ -20,7 +20,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void OnEnable()
     {
-        Player.DamageEvent += TakeDamage;
+        Player.PlayerDamageEvent += TakeDamage;
     }
     private void Start()
     {
@@ -34,6 +34,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void Attack()
     {
+       
         // make a colldier
         Collider2D[] obj = Physics2D.OverlapCircleAll(attackColliderPosition.transform.position, attackColliderRadius);
 
@@ -58,9 +59,19 @@ public class PlayerCombat : MonoBehaviour
                     EnemyDamagedEvent();
                 }
             }
+           
+           if (ob.tag == "HurtCollider")
+            {
+                EnemyDamagedEvent();
+                BaseEnemy enemyRef = ob.GetComponentInParent<BaseEnemy>();
+                if (enemyRef != null)
+                {
+                    Debug.Log("Base enemy is hurt with damage "+ damage);
+                    enemyRef.TakeDamage(damage);
+                }
+            }
             
         }
-        StartCoroutine(AttackCoroutine());
     }
 
     private void OnDrawGizmos()
@@ -77,11 +88,5 @@ public class PlayerCombat : MonoBehaviour
     private void TakeDamage(float damage)
     {
         health -= damage;
-    }
-
-    private IEnumerator AttackCoroutine()
-    {
-        yield return new WaitForSeconds(attackCooldown);
-        player.currentState = Player.PlayerState.Idle;
     }
 }

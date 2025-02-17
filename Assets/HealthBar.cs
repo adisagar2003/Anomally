@@ -14,13 +14,13 @@ public class HealthBar : MonoBehaviour
 
     private void OnEnable()
     {
-        Player.DamageEvent += TakeDamage;
+        Player.PlayerDamageEvent += TakeDamage;
         
     }
 
     private void OnDisable()
     {
-        Player.DamageEvent -= TakeDamage;
+        Player.PlayerDamageEvent -= TakeDamage;
     }
 
     private void TakeDamage(float damage)

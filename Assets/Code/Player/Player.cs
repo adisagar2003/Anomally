@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     public float attackCooldown { get; private set; }
     // event: player got hurt
     public delegate void DamageDelegate(float damage);
-    public static event DamageDelegate DamageEvent;
+    public static event DamageDelegate PlayerDamageEvent;
         
     // event: Player is dead
     public delegate void DeathDelegate();
@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
                 currentState = Player.PlayerState.Run;
                 }
             // shift state to idle
-            else if ((rb2D.velocity.sqrMagnitude < 0.001f))
+            else if ((rb2D.velocity.sqrMagnitude < 0.001f) && currentState != PlayerState.Attack)
             {
                 currentState = PlayerState.Idle;
             }
@@ -131,19 +131,35 @@ public class Player : MonoBehaviour
     // Combat 
     public void Attack()
     {
-        //// start attack only if is in ground and running or idle
-        //if (currentState == PlayerState.Idle || currentState == PlayerState.Run)
-        //{
-        //    currentState = PlayerState.Attack;
-        //    // player movement: slight upward push 
-        //    playerMovement.MoveForwardByAttack();
-        //    // player combat: Implement collisionspheres.
-        //    playerCombat.Attack();
-        //}
+        GroundAttack();
+        AirAttack();
+    }
 
+    private void GroundAttack()
+    {
+        if (currentState == PlayerState.Attack || currentState == PlayerState.Jump) return;
+        playerMovement.StopMovement();
+        playerInputHandler.DisableInput();
         currentState = PlayerState.Attack;
         playerCombat.Attack();
+        StartCoroutine(AttackCoroutine());
+    }
 
+    private void AirAttack()
+    {
+        if (currentState == PlayerState.Attack) return;
+        playerInputHandler.DisableInput();
+        currentState = PlayerState.Attack;
+        playerCombat.Attack();
+        StartCoroutine(AttackCoroutine());
+    }
+
+    private IEnumerator AttackCoroutine()
+    {
+     
+        yield return new WaitForSeconds(attackCooldown);
+        currentState = Player.PlayerState.Idle;
+        playerInputHandler.EnableInput();
 
     }
 
@@ -151,7 +167,7 @@ public class Player : MonoBehaviour
     {
         if (currentState == PlayerState.Hurt) return;
         currentState = PlayerState.Hurt;
-        DamageEvent(10.0f);
+        PlayerDamageEvent(10.0f);
         if (playerCombat.health < 0.0f)
         {
             Death();
@@ -159,12 +175,24 @@ public class Player : MonoBehaviour
         StartCoroutine(HurtCooldown());
     }
 
-    public void TakeDamage(Vector2 hurtDirection, bool flipped)
+    public void TakeDamage(float damage)
+    {
+        if (currentState == PlayerState.Hurt) return;
+        currentState = PlayerState.Hurt;
+        PlayerDamageEvent(damage);
+        if (playerCombat.health < 0.0f)
+        {
+            Death();
+        }
+        StartCoroutine(HurtCooldown());
+    }
+
+    public void TakeDamage(Vector2 hurtDirection, bool flipped,float amount = 3.0f)
     {
         if (currentState == PlayerState.Hurt) return;
         Debug.Log("Player took damage at" + hurtDirection.ToString());
         currentState = PlayerState.Hurt;
-        DamageEvent(10.0f);
+        PlayerDamageEvent(amount);
         if (playerCombat.health < 0.0f)
         {
             Death();
@@ -180,7 +208,7 @@ public class Player : MonoBehaviour
     {
         if (currentState == PlayerState.Hurt) return;
         currentState = PlayerState.Hurt;
-        DamageEvent(10.0f);
+        PlayerDamageEvent(10.0f);
         if (playerCombat.health < 0.0f)
         {
             Death();

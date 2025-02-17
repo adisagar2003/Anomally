@@ -170,7 +170,12 @@ public class PlayerMovement : MonoBehaviour
             rb2D.velocity = new Vector2(-1* knockbackForce, 0);
         }
         
+    }
 
+    // Use case: When a player is attacking, the velocity should be set to 0
+    public void StopMovement()
+    {
+        rb2D.velocity = Vector2.zero;
     }
 
     // For debugging purposes
