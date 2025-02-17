@@ -23,6 +23,7 @@ public class Rihno : BaseEnemy
     #region Combat 
     [SerializeField] private float knockbackForce = 5.0f;
     #endregion
+
     #region Debug
     [SerializeField] private string debugString = "";
     #endregion
@@ -34,6 +35,7 @@ public class Rihno : BaseEnemy
         rihnoIdleState = new RihnoIdleState(this, rihnoStateMachine);
         rihnoAttackState = new RihnoAttackState(this, rihnoStateMachine);
         rihnoChaseState = new RihnoChaseState(this, rihnoStateMachine);
+        rihnoHurtState = new RihnoHurtState(this, rihnoStateMachine);
     }
 
     private void Start()
@@ -60,12 +62,15 @@ public class Rihno : BaseEnemy
     // Attack the player
     public void Attack(Vector2 direction, bool flipped)
     {
-        Debug.Log("Direction of attack + " +direction.ToString());
-       
-        if (direction.x > 0.0f) player.TakeDamage(direction, true, damage);
-        if (direction.x < 0.0f) player.TakeDamage(direction, false, damage);
-        // change state
-        rihnoStateMachine.ChangeState(rihnoAttackState);
+        if (rihnoStateMachine.currentState is RihnoChaseState || rihnoStateMachine.currentState is RihnoIdleState)
+        {
+            Debug.Log("Direction of attack + " + direction.ToString());
+
+            if (direction.x > 0.0f) player.TakeDamage(direction, true, damage);
+            if (direction.x < 0.0f) player.TakeDamage(direction, false, damage);
+            // change state
+            rihnoStateMachine.ChangeState(rihnoAttackState);
+        }
     }
 
 
@@ -95,10 +100,12 @@ public class Rihno : BaseEnemy
     }
 
     public override void TakeDamage(float amount)
-    {
         
+    {
+        if (rihnoStateMachine.currentState is RihnoHurtState) return;
         health -= amount;   
         base.TakeDamage(amount);
+        rihnoStateMachine.ChangeState(rihnoHurtState);
         if (health < 0.1f)
         {
             Death();

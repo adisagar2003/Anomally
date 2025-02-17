@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class RihnoHurtState : RihnoState
 {
+    [SerializeField] private float hurtCooldown = 0.7f;
+    private float timer = 0.0f;
     public RihnoHurtState(Rihno rihnoref, RihnoStateMachine rihnoStateMachine) : base(rihnoref, rihnoStateMachine)
     {
     }
 
     public override void EnterState()
     {
-        base.EnterState();
+        timer = 0.0f;
+        Debug.Log("Entered Hurt State");
+       
     }
 
     public override bool Equals(object obj)
@@ -35,7 +39,12 @@ public class RihnoHurtState : RihnoState
 
     public override void OnUpdateState()
     {
-        base.OnUpdateState();
+        timer += Time.deltaTime;
+        if (timer > hurtCooldown)
+        {
+           
+            rihnoStateMachine.ChangeState(rihno.rihnoChaseState);
+        }
     }
 
     public override string ToString()
