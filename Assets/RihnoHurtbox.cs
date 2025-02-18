@@ -5,13 +5,14 @@ using UnityEngine;
 public class RihnoHurtbox : MonoBehaviour
 {
     private Rihno rihno;
-
+    public bool isInAttackArea = false;
     private void Start()
     {
         rihno = GetComponentInParent<Rihno>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        isInAttackArea = true;
         if (rihno == null) return;
         if (collision.CompareTag("Player"))
         {
@@ -21,5 +22,10 @@ public class RihnoHurtbox : MonoBehaviour
 
             rihno.Attack(directionOfAttack, true);
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        isInAttackArea = false;
     }
 }

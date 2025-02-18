@@ -40,6 +40,7 @@ public class Rihno : BaseEnemy
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         rihnoStateMachine.Initialize(rihnoIdleState);
     }
 
