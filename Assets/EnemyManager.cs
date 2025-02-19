@@ -4,32 +4,62 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public List<GameObject> EnemiesWaveOne;
-    public List<GameObject> EnemiesWaveTwo;
-    public List<GameObject> EnemiesWaveThree;
-    public List<GameObject> EnemiesWaveFour;
-    public List<GameObject> EnemiesWaveFive;
-    public List<GameObject> EnemiesWaveSix;
-    
 
-    public List<GameObject>[] waves;
-   
+    // Need to implement singleton pattern 
+    public static EnemyManager _instance { get; private set; }
+    int waveIndex = 0;
+    int enemyCount = 0;
+    public Wave[] waves;
+    [SerializeField] private Transform[] spawnPoints;
+    private string debugString = "";
 
-  
-    void Start()
+    private void OnEnable()
     {
-        waves = new List<GameObject>[] { EnemiesWaveOne, EnemiesWaveTwo, EnemiesWaveThree, EnemiesWaveFour, EnemiesWaveFive, EnemiesWaveSix };
+        BaseEnemy.DeathEvent += ReduceEnemyCount;
     }
 
+    private void OnDisable()
+    {
+        BaseEnemy.DeathEvent -= ReduceEnemyCount;
+    }
+    void Awake()
+    {
+        // prevents copies
+        if (_instance == null)
+        {
+            _instance = new EnemyManager();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    [ContextMenu("Initialize")]
+    public void Initialize()
+    {
+        GameObject[] enemiesRef = waves[waveIndex].GetEnemies();
+
+        // spawn each one at random transform points
+        foreach ( GameObject enemy in enemiesRef)
+        {
+            Transform randomTransform = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            Instantiate(enemy, randomTransform);
+            enemyCount += 1;
+        }
+
+        waveIndex += 1;
+    }
     // Update is called once per frame
     void Update()
     {
-
+        debugString += $"Enemy Count: {enemyCount}" +
+            $"Wave Index: {waveIndex}";
     }
 
-    public void Initialize()
+    private void ReduceEnemyCount()
     {
-        
+        enemyCount -= 1;
     }
+
 }

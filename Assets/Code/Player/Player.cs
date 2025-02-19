@@ -18,12 +18,13 @@ public class Player : MonoBehaviour
 
     public PlayerState currentState;
 
-    //private stuff goes here
+    #region Private Items
     private PlayerMovement playerMovement;
     private PlayerCombat playerCombat;
     private Rigidbody2D rb2D;
     private PlayerInputHandler playerInputHandler;
     private PlayerAnimHandle playerAnimHandle;
+    #endregion
     public float hurtCooldown { get; private set; }  = 0.2f;
     public float attackCooldown { get; private set; }
     // event: player got hurt

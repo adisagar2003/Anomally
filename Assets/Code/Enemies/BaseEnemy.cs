@@ -8,6 +8,11 @@ public abstract class BaseEnemy : MonoBehaviour, IDamagable
     [SerializeField] protected float damage = 10.0f;
     [SerializeField] protected float hurtCooldown  = 1.2f;
 
+    #region Events
+    public delegate void DeathDelegate();
+    public static event DeathDelegate DeathEvent;
+    #endregion
+
     protected void OnEnable()
     {
         Player.DeathEvent += DisableAllAttacks;
@@ -29,6 +34,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamagable
     public abstract void DisableAllAttacks();
     public virtual void Death()
     {
+        DeathEvent();
         Destroy(gameObject);
     }
 }
