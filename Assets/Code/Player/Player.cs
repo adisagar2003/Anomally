@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     #endregion
     public float hurtCooldown { get; private set; }  = 0.2f;
     public float attackCooldown { get; private set; }
+
+    #region Events
     // event: player got hurt
     public delegate void DamageDelegate(float damage);
     public static event DamageDelegate PlayerDamageEvent;
@@ -35,6 +37,7 @@ public class Player : MonoBehaviour
     public delegate void DeathDelegate();
     public static event DeathDelegate DeathEvent;
 
+    #endregion
     // For debugging purpodses
     [SerializeField] private string debugData = "";
     void Start()
@@ -65,6 +68,10 @@ public class Player : MonoBehaviour
             $" {playerCombat.health} \n Speed: {rb2D.velocity.ToString()}" +
             $" \n currentState: {currentState.ToString()} " +
             $"\n canDash: {playerMovement.canDash}" +
+            $"\n isOnGround: {playerMovement.isOnGround}" +
+            $"\n Check for player movement: {playerMovement}"+
+            $"\n Check for player combat: {playerCombat}"+
+            $"\n Check for player input handler: {playerInputHandler}"+
             $"\n isOnGround: {playerMovement.isOnGround}";
 
     }

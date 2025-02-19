@@ -6610,12 +6610,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e333650572160c4c829162f46c72e14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemiesWaveOne: []
-  EnemiesWaveTwo: []
-  EnemiesWaveThree: []
-  EnemiesWaveFour: []
-  EnemiesWaveFive: []
-  EnemiesWaveSix: []
+  waves: []
+  spawnPoints: []
 --- !u!4 &1702595133
 Transform:
   m_ObjectHideFlags: 0

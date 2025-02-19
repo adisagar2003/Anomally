@@ -35,6 +35,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float knockbackForce;
     [SerializeField] private float knockbackTime = 2.0f;
     private bool isKnockingBack = false;
+
+    #region  Events
+    // event: Player flipped it's direction;
+    public delegate void FlipDelegate(float val);
+    public static event FlipDelegate FlipEvent;
+    #endregion
     void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -68,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (rb2D != null)
         {
-            HandleSpriteFlip(xInput);
+            HandleFacingDirection(xInput);
             Vector2 horizontalVelocity = new Vector2(xInput * playerSpeed, 0) + new Vector2(0, rb2D.velocity.y);
             rb2D.velocity = horizontalVelocity;
         }
@@ -98,20 +104,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void HandleSpriteFlip(float xInput)
+    private void HandleFacingDirection(float xInput)
     {
         if (xInput != 0)
         {
             facingDirection = xInput;
         }
 
+
         if (xInput == 1)
         {
+            FlipEvent(xInput);
             player.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
         else if (xInput == -1)
         {
+            FlipEvent(xInput);
             player.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }

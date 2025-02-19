@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
     public void Retry()
     {
-        SceneManager.LoadScene("prototype");
+        SceneManager.LoadScene("MainLevel");
     }
 
     public void Quit()
     {
-      
+        Application.Quit();
     }
 }
