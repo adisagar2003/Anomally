@@ -8,12 +8,17 @@ public abstract class RihnoState
     protected float startTime;
     protected Rihno rihno;
     protected RihnoStateMachine rihnoStateMachine;
+    protected Animator rihnoAnimator;
     public float time => Time.time - startTime;
 
     public RihnoState(Rihno rihnoref, RihnoStateMachine rihnoStateMachine)
     {
         this.rihno = rihnoref;
         this.rihnoStateMachine = rihnoStateMachine;
+        if (rihno)
+        {
+            rihnoAnimator = rihno.GetComponentInChildren<Animator>();
+        }
     }
 
     

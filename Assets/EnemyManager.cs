@@ -16,13 +16,21 @@ public class EnemyManager : MonoBehaviour
     private void OnEnable()
     {
         BaseEnemy.DeathEvent += ReduceEnemyCount;
+        Altar.StartEnemyManager += Initialize;
     }
 
     private void OnDisable()
     {
         BaseEnemy.DeathEvent -= ReduceEnemyCount;
+        Altar.StartEnemyManager -= Initialize;
     }
     void Awake()
+    {
+        SingletonHandle();
+    }
+
+
+    private void SingletonHandle()
     {
         // prevents copies
         if (_instance == null)
@@ -53,8 +61,7 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        debugString += $"Enemy Count: {enemyCount}" +
-            $"Wave Index: {waveIndex}";
+
     }
 
     private void ReduceEnemyCount()

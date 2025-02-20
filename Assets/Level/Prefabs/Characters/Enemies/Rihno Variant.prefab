@@ -8,6 +8,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1631237545163232788, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Size.y
+      value: 0.8891771
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631237545163232788, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.1664964
+      objectReference: {fileID: 0}
+    - target: {fileID: 1750512478665831435, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1946193468, guid: 2ffb16b1404b9084ab708cbb1313b025, type: 3}
     - target: {fileID: 2375230862419969244, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_Mass
       value: 0.3769629
@@ -15,6 +27,10 @@ PrefabInstance:
     - target: {fileID: 2436710675526692261, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_Name
       value: Rihno Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 3201709210449533101, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.61
       objectReference: {fileID: 0}
     - target: {fileID: 3465130941813049136, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -60,9 +76,66 @@ PrefabInstance:
       propertyPath: speed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7211227784226078253, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Size.x
+      value: 0.6395681
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211227784226078253, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Size.y
+      value: 0.89485013
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211227784226078253, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.07174361
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211227784226078253, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.20265388
+      objectReference: {fileID: 0}
+    - target: {fileID: 7407099594519667958, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Size.y
+      value: 1.0219517
+      objectReference: {fileID: 0}
+    - target: {fileID: 7407099594519667958, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.013067305
+      objectReference: {fileID: 0}
+    - target: {fileID: 7407099594519667958, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.2509396
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2788009051214558232, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6044147360665003910, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4632071105678140626}
   m_SourcePrefab: {fileID: 100100000, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+--- !u!1 &9134657523916088686 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6044147360665003910, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+  m_PrefabInstance: {fileID: 3253273068601295592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4632071105678140626
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9134657523916088686}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 482d5cd3248431f4a87314ff42c0f6e1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class RihnoIdleState : RihnoState
 {
-    private float idleTime = 2.4f;
-    private float timer = 0.0f;
+    [SerializeField] private float idleTime = 0.9f;
+    [SerializeField] private float timer = 0.0f;
     private RihnoStateMachine rihnoStateMachine;
     private Rihno rihno;
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RihnoHurtState : RihnoState
 {
-    [SerializeField] private float hurtCooldown = 0.7f;
+    [SerializeField] private float hurtCooldown = 1.2f;
     private float timer = 0.0f;
     public RihnoHurtState(Rihno rihnoref, RihnoStateMachine rihnoStateMachine) : base(rihnoref, rihnoStateMachine)
     {
@@ -14,6 +14,7 @@ public class RihnoHurtState : RihnoState
     {
         timer = 0.0f;
         Debug.Log("Entered Hurt State");
+        rihnoAnimator.SetTrigger("Hurt");
        
     }
 
