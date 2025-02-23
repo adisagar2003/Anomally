@@ -212,7 +212,6 @@ public class Player : MonoBehaviour
     public void TakeDamage(Vector2 hurtDirection, bool flipped,float amount = 3.0f)
     {
         if (currentState == PlayerState.Hurt) return;
-        Debug.Log("Player took damage at" + hurtDirection.ToString());
         currentState = PlayerState.Hurt;
         PlayerDamageEvent(amount);
         if (playerCombat.health < 0.0f)

@@ -178,7 +178,6 @@ public class PlayerMovement : MonoBehaviour
         //rb2d.gravityscale = 0;
         //isknockingback = true;a
         yield return new WaitForSeconds(knockbackTime);
-        Debug.Log("Back Again");
         rb2D.velocity = Vector2.zero;
         player.currentState = Player.PlayerState.Idle;
         //rb2D.velocity = Vector2.zero;

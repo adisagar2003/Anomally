@@ -59,7 +59,6 @@ public class RihnoAttackState : RihnoState
             }
             else
             {
-                Debug.Log("Back to Chase state");
                 rihnoStateMachine.ChangeState(rihno.rihnoChaseState);
             }
             

@@ -19,7 +19,7 @@ public abstract class RihnoState
         {
             rihnoAnimator = rihno.GetComponentInChildren<Animator>();
         }
-    }
+    }   
 
     
     public virtual void EnterState()

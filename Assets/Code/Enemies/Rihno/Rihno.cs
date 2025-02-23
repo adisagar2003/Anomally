@@ -12,7 +12,7 @@ public class Rihno : BaseEnemy
     public RihnoAttackState rihnoAttackState;
     public RihnoChaseState rihnoChaseState;
     public RihnoHurtState rihnoHurtState;
-
+    public RihnoDeathState rihnoDeathState;
     #endregion
 
     #region Movement 
@@ -22,6 +22,7 @@ public class Rihno : BaseEnemy
 
     #region Combat 
     [SerializeField] private float knockbackForce = 5.0f;
+    [SerializeField] private float deathCooldown = 1.4f;
     #endregion
 
     #region Debug
@@ -36,6 +37,7 @@ public class Rihno : BaseEnemy
         rihnoAttackState = new RihnoAttackState(this, rihnoStateMachine);
         rihnoChaseState = new RihnoChaseState(this, rihnoStateMachine);
         rihnoHurtState = new RihnoHurtState(this, rihnoStateMachine);
+        rihnoDeathState = new RihnoDeathState(this, rihnoStateMachine,deathCooldown);
     }
 
     private void Start()
@@ -44,10 +46,10 @@ public class Rihno : BaseEnemy
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         SetRandomSpeed();
     }
+
     // Set Random speed on Spwan
     private void SetRandomSpeed()
     {
-        // Set Random Speed for each player +- 5 
         speed = Random.Range(speed - 5, speed + 6);
     }
 
@@ -101,7 +103,12 @@ public class Rihno : BaseEnemy
 
     public override void Death()
     {
-        base.Death();
+        
+    }
+
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 
     protected override void WaitForPlayerToRecover(float amt)
@@ -111,7 +118,12 @@ public class Rihno : BaseEnemy
 
     public override void DisableAllAttacks()
     {
-
+        // disable all colliders internally 
+        Collider2D[] childrenColliders = gameObject.GetComponentsInChildren<Collider2D>();
+        foreach (Collider2D childCollider in childrenColliders)
+        {
+            childCollider.enabled = false;
+        }
     }
 
     public override bool Equals(object other)
@@ -128,15 +140,32 @@ public class Rihno : BaseEnemy
         
     {
         if (rihnoStateMachine.currentState is RihnoHurtState) return;
-        health -= amount;   
         base.TakeDamage(amount);
+        
         rihnoStateMachine.ChangeState(rihnoHurtState);
-        if (health < 0.1f)
-        {
-            Death();
-        }
+        KnockBack();
+        DeathIfHealthTooLow();
+        
     }
 
+    [ContextMenu("RihnoKnockBack")]
+    private void KnockBack()
+    {
+        // Add a knockback force
+        if (player != null)
+        {
+            Vector2 directionOfForce = (transform.position - player.transform.position).normalized;
+            directionOfForce.y = 0;
+            rb.AddForce(directionOfForce * knockbackForce, ForceMode2D.Impulse);
+        }
+    }
+    private void DeathIfHealthTooLow()
+    {
+        if (health < 0.1f)
+        {
+            rihnoStateMachine.ChangeState(rihnoDeathState);
+        }
+    }
     public override string ToString()
     {
         return base.ToString();

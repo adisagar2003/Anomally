@@ -67,10 +67,6 @@ public class EnemyManager : MonoBehaviour
     private void ReduceEnemyCount()
     {
         enemyCount -= 1;
-        if (enemyCount < 1)
-        {
-            Initialize();
-        }
     }
 
 }

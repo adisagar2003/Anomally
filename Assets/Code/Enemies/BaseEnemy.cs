@@ -26,7 +26,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamagable
 
     public virtual void TakeDamage(float amount)
     {
-        
+        health -= amount;
     }
 
     public abstract void Attack();

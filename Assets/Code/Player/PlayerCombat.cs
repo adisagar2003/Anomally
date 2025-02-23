@@ -7,12 +7,17 @@ public class PlayerCombat : MonoBehaviour
     public float health  = 100.0f;
     [SerializeField] private float damage = 3.0f;
     [SerializeField] private float attackCooldown = .4f;
+    [SerializeField] private float sparkTimer = .4f;
     private Player player;
 
     [Header("Attack")]
     [SerializeField] private GameObject attackColliderPosition;
     [SerializeField] private float attackColliderRadius;
     private bool isAttacking = false;
+
+    [Header("FX")]
+    [SerializeField] private GameObject swordFX;
+    private GameObject swordFXRef;
 
     // event: Enemy damaged -> Camera Shake
     public delegate void EnemyDamaged();    
@@ -21,6 +26,11 @@ public class PlayerCombat : MonoBehaviour
     private void OnEnable()
     {
         Player.PlayerDamageEvent += TakeDamage;
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
     private void Start()
     {
@@ -54,7 +64,6 @@ public class PlayerCombat : MonoBehaviour
                 Runner runnerRef = ob.GetComponentInParent<Runner>();
                 if (runnerRef != null)
                 {
-                    Debug.Log("Runner is hurt");
                     runnerRef.GetHurtByPlayer(player.GetFacingDirection());
                     EnemyDamagedEvent();
                 }
@@ -62,16 +71,29 @@ public class PlayerCombat : MonoBehaviour
            
            if (ob.tag == "HurtCollider")
             {
+                
                 EnemyDamagedEvent();
                 BaseEnemy enemyRef = ob.GetComponentInParent<BaseEnemy>();
                 if (enemyRef != null)
                 {
-                    Debug.Log("Base enemy is hurt with damage "+ damage);
+                    GameObject swordFXSpawned = Instantiate(swordFX, ob.transform);
+                    enemyRef.transform.SetParent(swordFXSpawned.transform);
+                    // Save ref for coroutine
+                    swordFXRef = swordFXSpawned;
+                    swordFXSpawned.transform.localPosition = new Vector3(0, 0, 0);
+                    StartCoroutine(DestroySpark());
                     enemyRef.TakeDamage(damage);
                 }
             }
             
         }
+    }
+
+    private IEnumerator DestroySpark()
+    {
+        yield return new WaitForSeconds(sparkTimer);
+
+        Destroy(swordFXRef);
     }
 
     private void OnDrawGizmos()

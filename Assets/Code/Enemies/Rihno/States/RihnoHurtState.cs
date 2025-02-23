@@ -13,7 +13,6 @@ public class RihnoHurtState : RihnoState
     public override void EnterState()
     {
         timer = 0.0f;
-        Debug.Log("Entered Hurt State");
         rihnoAnimator.SetTrigger("Hurt");
        
     }

@@ -14,7 +14,6 @@ public class RihnoChaseState : RihnoState
 
     public override void EnterState()
     {
-        Debug.Log("Tohar maiya hai nu in Chase state");
     }
 
     public override bool Equals(object obj)

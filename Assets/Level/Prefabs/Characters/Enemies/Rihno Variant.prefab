@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 177317567494090970, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_IncludeLayers.m_Bits
-      value: 128
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1080309108329520598, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_LocalScale.x
@@ -112,6 +112,10 @@ PrefabInstance:
       propertyPath: speed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5374625553390373980, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: knockbackForce
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 5616948306325355516, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -138,11 +142,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7211227784226078253, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
-      value: 439
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211227784226078253, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_IncludeLayers.m_Bits
-      value: 64
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7407099594519667958, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_Size.y
@@ -171,6 +175,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2788009051214558232, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+    - {fileID: 5616948306325355516, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6044147360665003910, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
