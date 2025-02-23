@@ -13,16 +13,15 @@ public class RihnoAttackState : RihnoState
         this.rihnoStateMachine = rihnoStateMachine;
     }
 
-    private void Start()
+    private void a()
     {
         // this will be needed to check if the object is in attack range after attack is executed
-        rihnoHurtbox = rihno.GetComponentInChildren<RihnoHurtbox>();
     }
     public override void EnterState()
     {
         timer = 0.0f;
+        rihnoHurtbox = rihno.GetComponentInChildren<RihnoHurtbox>();
         base.EnterState();
-
     }
 
     public override bool Equals(object obj)
@@ -56,7 +55,7 @@ public class RihnoAttackState : RihnoState
             // Attack again if in attack range, chase otherwise
             if (rihnoHurtbox.isInAttackArea)
             {
-                rihnoStateMachine.ChangeState(rihno.rihnoAttackState);
+                rihno.Attack(rihnoHurtbox.GetDirectionOfAttack());
             }
             else
             {
