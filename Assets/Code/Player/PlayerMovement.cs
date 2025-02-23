@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Player player;
+    private Player player;
 
 
     [Header("Movement Controls")]
@@ -12,9 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float facingDirection = 1.0f;
     // Dashing
     [SerializeField] private float dashIntensity = 10.0f;
-    [SerializeField] private float dashLerpTime = 10.0f;
     public float dashCooldown = 1.4f;
-    [SerializeField] private float maxSpeed = 60.0f;
     public bool canDash { get; private set; } = true;
     [SerializeField] private float canDashAgainAfter = 2.2f;
     [Header("Jumping")]
@@ -43,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
     void Awake()
     {
+        player = GetComponent<Player>();
         rb2D = GetComponent<Rigidbody2D>();
 
     }
@@ -70,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
             isOnGround = false;
         }
     }
+
     public void HandleMovement(float xInput)
     {
         if (rb2D != null)
@@ -79,22 +79,6 @@ public class PlayerMovement : MonoBehaviour
             rb2D.velocity = horizontalVelocity;
         }
     }
-
-    /*
-    ``````````````````MOVED TO Player.cs
-    private void StateManagement()
-    {
-        if (isOnGround)
-        {
-            if (rb2D.velocity != Vector2.zero) player.currentState = Player.PlayerState.Run;
-            if (rb2D.velocity == Vector2.zero) player.currentState = Player.PlayerState.Idle;
-        }
-        else if (!isOnGround)
-        {
-            player.currentState = Player.PlayerState.Jump;
-        }
-    }
-    */
 
     public void Jump()
     {
@@ -124,6 +108,7 @@ public class PlayerMovement : MonoBehaviour
             player.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
+
     // handles gravity scale while on air 
     void HandleGravityScale()
     {
@@ -140,13 +125,6 @@ public class PlayerMovement : MonoBehaviour
             rb2D.gravityScale = gravity;
           
         }
-    }
-
-   
-    // when attacking, sligtly move forward;
-    public void MoveForwardByAttack()
-    {
-        rb2D.AddForce(new Vector2(facingDirection * forwardForce, 0), ForceMode2D.Impulse);
     }
 
     public void Dash()
@@ -216,4 +194,14 @@ public class PlayerMovement : MonoBehaviour
             rb2D.velocity = (Vector2.left * knockbackForce);
         }
     }
+
+    #region Movement By Combat and Damage
+    [ContextMenu("Move Forward While Attacking")]
+    public void MoveForwardByAttack()
+    {
+        rb2D.AddForce(new Vector2(facingDirection * forwardForce, 0), ForceMode2D.Force);
+    }
+    #endregion
+
+
 }

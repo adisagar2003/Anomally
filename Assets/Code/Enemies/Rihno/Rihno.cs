@@ -40,13 +40,23 @@ public class Rihno : BaseEnemy
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         rihnoStateMachine.Initialize(rihnoIdleState);
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        SetRandomSpeed();
+    }
+    // Set Random speed on Spwan
+    private void SetRandomSpeed()
+    {
+        // Set Random Speed for each player +- 5 
+        speed = Random.Range(speed - 5, speed + 6);
     }
 
     private void Update()
     {
-        debugString = $"Current State: {rihnoStateMachine.currentState}";
+        if (rihnoStateMachine == null) return;
+        debugString = $"Current State: {rihnoStateMachine.currentState}" +
+            $"\t Combat \t" +
+            $"\n Is Cooldown: ";
         rihnoStateMachine.currentState.OnUpdateState();
     }
 
@@ -61,9 +71,10 @@ public class Rihno : BaseEnemy
     }
 
     // Attack the player
-    public void Attack(Vector2 direction, bool flipped)
+    public void Attack(Vector2 direction)
     {
-        if (rihnoStateMachine.currentState is RihnoChaseState || rihnoStateMachine.currentState is RihnoIdleState)
+        if (player == null) return;
+        if (CheckForAttackingAgain())
         {
             Debug.Log("Direction of attack + " + direction.ToString());
 
@@ -71,9 +82,17 @@ public class Rihno : BaseEnemy
             if (direction.x < 0.0f) player.TakeDamage(direction, false, damage);
             // change state
             rihnoStateMachine.ChangeState(rihnoAttackState);
+           
         }
     }
 
+    private bool CheckForAttackingAgain()
+    {
+        return (rihnoStateMachine.currentState is RihnoChaseState
+                || rihnoStateMachine.currentState is RihnoIdleState
+                || rihnoStateMachine.currentState is RihnoAttackState
+        );
+    }
 
     public override void Damage(float damageAmount)
     {
@@ -83,6 +102,11 @@ public class Rihno : BaseEnemy
     public override void Death()
     {
         base.Death();
+    }
+
+    protected override void WaitForPlayerToRecover(float amt)
+    {
+        rihnoStateMachine.ChangeState(rihnoIdleState);
     }
 
     public override void DisableAllAttacks()
@@ -123,4 +147,5 @@ public class Rihno : BaseEnemy
     {
         rb.velocity = direction * speed;
     }
+
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class RihnoAttackState : RihnoState
 {
     [SerializeField] private float rihnoAttackCooldown = 1.0f;
+    [SerializeField] private RihnoHurtbox rihnoHurtbox;
     private float timer = 0;
     public RihnoAttackState(Rihno rihnoref, RihnoStateMachine rihnoStateMachine) : base(rihnoref, rihnoStateMachine)
     {
@@ -12,11 +13,16 @@ public class RihnoAttackState : RihnoState
         this.rihnoStateMachine = rihnoStateMachine;
     }
 
+    private void Start()
+    {
+        // this will be needed to check if the object is in attack range after attack is executed
+        rihnoHurtbox = rihno.GetComponentInChildren<RihnoHurtbox>();
+    }
     public override void EnterState()
     {
         timer = 0.0f;
         base.EnterState();
-        Debug.Log("Entering Attack State");
+
     }
 
     public override bool Equals(object obj)
@@ -45,9 +51,25 @@ public class RihnoAttackState : RihnoState
 
         if (timer > rihnoAttackCooldown)
         {
-            Debug.Log("Back to Chase state");
-            rihnoStateMachine.ChangeState(rihno.rihnoChaseState);
+            if (rihnoHurtbox == null) rihnoStateMachine.ChangeState(rihno.rihnoIdleState);
+
+            // Attack again if in attack range, chase otherwise
+            if (rihnoHurtbox.isInAttackArea)
+            {
+                rihnoStateMachine.ChangeState(rihno.rihnoAttackState);
+            }
+            else
+            {
+                Debug.Log("Back to Chase state");
+                rihnoStateMachine.ChangeState(rihno.rihnoChaseState);
+            }
+            
         }
+    }
+
+    public bool GetIsInAttackArea()
+    {
+        return rihnoHurtbox.isInAttackArea;
     }
 
     public override string ToString()
@@ -55,15 +77,5 @@ public class RihnoAttackState : RihnoState
         return base.ToString();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  
 }

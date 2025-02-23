@@ -13,12 +13,13 @@ public abstract class BaseEnemy : MonoBehaviour, IDamagable
     public static event DeathDelegate DeathEvent;
     #endregion
 
-    protected void OnEnable()
+    protected virtual void OnEnable(float amt)
     {
+        Player.PlayerDamageEvent += WaitForPlayerToRecover;
         Player.DeathEvent += DisableAllAttacks;
     }
 
-    protected void OnDisable()
+    protected virtual void OnDisable(float amt)
     {
         Player.DeathEvent -= DisableAllAttacks;
     }
@@ -30,7 +31,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamagable
 
     public abstract void Attack();
     public abstract void Damage(float damageAmount);
-
+    protected abstract void WaitForPlayerToRecover(float amt);
     public abstract void DisableAllAttacks();
     public virtual void Death()
     {

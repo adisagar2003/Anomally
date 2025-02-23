@@ -25,8 +25,11 @@ public class Player : MonoBehaviour
     private PlayerInputHandler playerInputHandler;
     private PlayerAnimHandle playerAnimHandle;
     #endregion
-    public float hurtCooldown { get; private set; }  = 0.2f;
+
+    #region Cooldown
+    public float hurtCooldown { get; private set; } = 0.2f;
     public float attackCooldown { get; private set; }
+    #endregion
 
     #region Events
     // event: player got hurt
@@ -83,18 +86,9 @@ public class Player : MonoBehaviour
         if (playerMovement.isOnGround)
         {
             // shift  state to run
-            if ((rb2D.velocity.sqrMagnitude > 0.001f)
-                && currentState != PlayerState.Dash
-                && currentState != PlayerState.Attack
-                && currentState != PlayerState.Hurt
-                ) {
-                currentState = Player.PlayerState.Run;
-                }
-            // shift state to idle
-            else if ((rb2D.velocity.sqrMagnitude < 0.001f) && currentState != PlayerState.Attack)
-            {
-                currentState = PlayerState.Idle;
-            }
+            if (IsIdle()) currentState = Player.PlayerState.Run;
+
+            else SetIdle();
         }
         else if (!playerMovement.isOnGround)
         {
@@ -102,6 +96,24 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void SetIdle()
+    {
+        if ((rb2D.velocity.sqrMagnitude < 0.001f) && currentState != PlayerState.Attack)
+        {
+            currentState = PlayerState.Idle;
+        }
+    }
+
+    private bool IsIdle()
+    {
+        return ((rb2D.velocity.sqrMagnitude > 0.001f)
+                && currentState != PlayerState.Dash
+                && currentState != PlayerState.Attack
+                && currentState != PlayerState.Hurt
+                );
+    }
+
+    #region Player Movement
     public void MovePlayer(float xInput)
     {
         if (currentState == PlayerState.Idle || currentState == PlayerState.Run)  playerMovement.HandleMovement(xInput);
@@ -126,6 +138,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    #endregion
     // Future migration: to PlayerMovement.cs
     private IEnumerator DashCooldown()
     {
@@ -146,11 +159,12 @@ public class Player : MonoBehaviour
     private void GroundAttack()
     {
         if (currentState == PlayerState.Attack || currentState == PlayerState.Jump) return;
-        playerMovement.StopMovement();
+        playerMovement.MoveForwardByAttack();
         playerInputHandler.DisableInput();
         currentState = PlayerState.Attack;
         playerCombat.Attack();
         StartCoroutine(AttackCoroutine());
+        playerMovement.StopMovement();
     }
 
     private void AirAttack()

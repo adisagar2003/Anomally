@@ -86,5 +86,10 @@ public class Homer : BaseEnemy
     {
         currentState = HomerState.Idle;
     }
+
+    protected override void WaitForPlayerToRecover(float amt)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

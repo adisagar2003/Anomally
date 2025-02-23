@@ -73,7 +73,7 @@ public class Runner : BaseEnemy
         // Now runner will chase the player
         if (isInDetectableArea)
         {
-            Attack();
+        
         }
         else
         {
@@ -168,8 +168,13 @@ public class Runner : BaseEnemy
     {
     }
 
+    protected override void WaitForPlayerToRecover(float amt)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void Attack()
     {
-        Debug.Log("Future implementation");
+        throw new System.NotImplementedException();
     }
 }
