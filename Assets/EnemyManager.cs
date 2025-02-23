@@ -11,7 +11,6 @@ public class EnemyManager : MonoBehaviour
     int enemyCount = 0;
     public Wave[] waves;
     [SerializeField] private Transform[] spawnPoints;
-    private string debugString = "";
 
     private void OnEnable()
     {

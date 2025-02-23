@@ -76,12 +76,7 @@ public class PlayerCombat : MonoBehaviour
                 BaseEnemy enemyRef = ob.GetComponentInParent<BaseEnemy>();
                 if (enemyRef != null)
                 {
-                    GameObject swordFXSpawned = Instantiate(swordFX, ob.transform);
-                    enemyRef.transform.SetParent(swordFXSpawned.transform);
-                    // Save ref for coroutine
-                    swordFXRef = swordFXSpawned;
-                    swordFXSpawned.transform.localPosition = new Vector3(0, 0, 0);
-                    StartCoroutine(DestroySpark());
+                    ApplySwordFX(ob, enemyRef);
                     enemyRef.TakeDamage(damage);
                 }
             }
@@ -89,11 +84,15 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    private IEnumerator DestroySpark()
+    private void ApplySwordFX(Collider2D ob, BaseEnemy enemyRef)
     {
-        yield return new WaitForSeconds(sparkTimer);
-
-        Destroy(swordFXRef);
+        GameObject swordFXSpawned = Instantiate(swordFX, ob.transform);
+        if (enemyRef.transform.GetComponentInChildren<SwordFX>() != null)
+        {
+            enemyRef.transform.SetParent(swordFXSpawned.transform);
+            // Save ref for coroutine
+            swordFXSpawned.transform.localPosition = new Vector3(0, 0, 0);
+        }
     }
 
     private void OnDrawGizmos()

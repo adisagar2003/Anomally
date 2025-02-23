@@ -113,6 +113,14 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5374625553390373980, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: hurtCooldown
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5374625553390373980, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: deathCooldown
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5374625553390373980, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: knockbackForce
       value: 250
       objectReference: {fileID: 0}

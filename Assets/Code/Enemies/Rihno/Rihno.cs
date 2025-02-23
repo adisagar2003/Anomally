@@ -23,6 +23,7 @@ public class Rihno : BaseEnemy
     #region Combat 
     [SerializeField] private float knockbackForce = 5.0f;
     [SerializeField] private float deathCooldown = 1.4f;
+    [SerializeField] private float minimumDistanceToWaitForAttack = 5.0f;
     #endregion
 
     #region Debug
@@ -78,8 +79,6 @@ public class Rihno : BaseEnemy
         if (player == null) return;
         if (CheckForAttackingAgain())
         {
-            Debug.Log("Direction of attack + " + direction.ToString());
-
             if (direction.x > 0.0f) player.TakeDamage(direction, true, damage);
             if (direction.x < 0.0f) player.TakeDamage(direction, false, damage);
             // change state
@@ -113,7 +112,12 @@ public class Rihno : BaseEnemy
 
     protected override void WaitForPlayerToRecover(float amt)
     {
-        rihnoStateMachine.ChangeState(rihnoIdleState);
+        if (player != null && Vector2.Distance(player.transform.position,gameObject.transform.position) < minimumDistanceToWaitForAttack)
+        {
+            Debug.Log("Everyone changes to idle");
+            rihnoStateMachine.ChangeState(rihnoIdleState);
+        }
+       
     }
 
     public override void DisableAllAttacks()

@@ -251,11 +251,22 @@ public class Player : MonoBehaviour
         // send a signal that player is dead
         if (playerInputHandler != null) playerInputHandler.OnDisable();
         playerInputHandler = null;
+        DisableAllScripts(); 
         DeathEvent();
+    }
+
+    private void DisableAllScripts()
+    {
+        MonoBehaviour[] scripts = gameObject.GetComponents<MonoBehaviour>();
+        foreach (MonoBehaviour sc in scripts)
+        {
+            sc.enabled = false;
+        }
     }
 
     private void OnDisable()
     {
+
         StopAllCoroutines();
     }
 }
