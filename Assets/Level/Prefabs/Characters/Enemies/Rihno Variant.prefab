@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 177317567494090970, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
-      value: 256
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 177317567494090970, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_IncludeLayers.m_Bits
-      value: 4294967295
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 1080309108329520598, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_LocalScale.x
@@ -136,6 +136,14 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.20265388
       objectReference: {fileID: 0}
+    - target: {fileID: 7211227784226078253, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 439
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211227784226078253, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 7407099594519667958, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_Size.y
       value: 1.0219517
@@ -147,6 +155,14 @@ PrefabInstance:
     - target: {fileID: 7407099594519667958, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_Offset.y
       value: 0.2509396
+      objectReference: {fileID: 0}
+    - target: {fileID: 7407099594519667958, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 183
+      objectReference: {fileID: 0}
+    - target: {fileID: 7407099594519667958, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 8933967256640706944, guid: 68f61d2653fc9d94c87f23a73686811b, type: 3}
       propertyPath: m_Layer
