@@ -32,7 +32,7 @@ public abstract class RihnoState
         // End state
     }
 
-    public string GetStateName()
+    public virtual string GetStateName()
     {
         
         return "";

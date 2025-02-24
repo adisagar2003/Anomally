@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("MainLevel");
     }
+
     [ContextMenu("Quit")]
     public void Quit()
     {
