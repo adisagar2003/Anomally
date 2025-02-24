@@ -23,7 +23,6 @@ public class GolemPlayerDetection : MonoBehaviour
         //if (golem == null) return;
         if (!collision.CompareTag("Player")) return;
         golem.SetInDetectableArea(false);
-        golem.SetToIdleIfWasWalking();
     }
 
     private void Update()

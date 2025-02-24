@@ -6,14 +6,24 @@ public class Golem : BaseEnemy
 {
 
 
-    private GolemStateMachine golemStateMachine;
-    private GolemIdleState golemIdleState;
-    private GolemWalkState golemWalkState;
+    public GolemStateMachine golemStateMachine;
+    public GolemIdleState golemIdleState;
+    public GolemWalkState golemWalkState;
+    public GolemAttackState golemAttackState;
 
     [SerializeField] private string debugString = "";
 
+    #region Movement
+    private float speed = 10.0f;
+    private Rigidbody2D rb;
+    #endregion
+
     #region Player Detection
     private bool isInDetectableArea = false;
+    #endregion
+
+    #region Combat
+
     #endregion
     private void OnEnable()
     {
@@ -30,7 +40,8 @@ public class Golem : BaseEnemy
         golemStateMachine = new GolemStateMachine();
         golemIdleState = new GolemIdleState(this, golemStateMachine);
         golemWalkState = new GolemWalkState(this, golemStateMachine);
-
+        golemAttackState = new GolemAttackState(this, golemStateMachine);
+        rb = GetComponent<Rigidbody2D>();
         // initialize state
         golemStateMachine.Initialize(golemIdleState);
     }
@@ -83,4 +94,11 @@ public class Golem : BaseEnemy
             golemStateMachine.ChangeState(golemIdleState);
         }
     }
+
+    #region Movement
+    public void MoveGolem(Vector2 direction)
+    {
+        rb.velocity = speed * direction;
+    }
+    #endregion
 }

@@ -8,11 +8,13 @@ public abstract class GolemState
     protected GolemStateMachine golemStateMachine;
     protected Animator golemAnimator;
     protected string currentStateName;
+    protected Player playerRef;
     public GolemState(Golem golemRef, GolemStateMachine golemStateMachine)
     {
         this.golem = golemRef;
         this.golemStateMachine = golemStateMachine;
         golemAnimator = golem.GetComponentInChildren<Animator>();
+        playerRef = GameObject.FindFirstObjectByType<Player>();
     }
 
 
