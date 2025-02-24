@@ -19,7 +19,7 @@ public class Golem : BaseEnemy
     #endregion
 
     #region Player Detection
-    private bool isInDetectableArea = false;
+    public bool isInDetectableArea { get; private set; } = false;
     #endregion
 
     #region Combat

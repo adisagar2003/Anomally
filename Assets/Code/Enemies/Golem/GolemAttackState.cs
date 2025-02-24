@@ -16,8 +16,10 @@ public class GolemAttackState : GolemState
 
     public override void EnterState()
     {
+        timer = 0.0f;
         golemAnimator.SetTrigger("Attack");
         SetAttackAnimationDuration();
+
     }
 
     private void SetAttackAnimationDuration()
@@ -41,7 +43,7 @@ public class GolemAttackState : GolemState
     public override void ExitState()
     {
         golemAnimator.ResetTrigger("Attack");
-
+        
         base.ExitState();
     }
 
@@ -64,16 +66,12 @@ public class GolemAttackState : GolemState
     public override void OnUpdate()
     {
         timer += Time.deltaTime;
+        Debug.Log("Attack timer " + timer);
         if (timer > attackAnimDuration)
         {
-            if (Vectors.DistanceBetweenTwoObjects(golem, playerRef) < 2.1f)
-            {
-                golemStateMachine.ChangeState(golem.golemAttackState);
-            }
-            else
-            {
-                golemStateMachine.ChangeState(golem.golemIdleState);
-            }
+            Debug.Log("Anim Over");
+            golemStateMachine.ChangeState(golem.golemWalkState);
+
         }
         base.OnUpdate();
     }
