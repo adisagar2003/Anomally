@@ -209,19 +209,20 @@ public class Player : MonoBehaviour
         StartCoroutine(HurtCooldown());
     }
 
-    public void TakeDamage(Vector2 hurtDirection, bool flipped,float amount = 3.0f)
+    public void TakeDamage(Vector2 hurtDirection,float amount = 3.0f)
     {
         if (currentState == PlayerState.Hurt) return;
         currentState = PlayerState.Hurt;
         PlayerDamageEvent(amount);
+
+        // knock player back towards hurt Direction
+        playerMovement.KnockBack(new Vector2(hurtDirection.x, 0));
+        StartCoroutine(HurtCooldown());
+
         if (playerCombat.health < 0.0f)
         {
             Death();
         }
-
-        // knock player back towards hurt Direction
-        playerMovement.KnockBack(new Vector2(hurtDirection.x, 0), flipped);
-        StartCoroutine(HurtCooldown());
     }
 
     [ContextMenu("Take Damage Left")]
@@ -236,7 +237,7 @@ public class Player : MonoBehaviour
         }
 
         // knock player back towards hurt Direction
-        playerMovement.KnockBack(Vector2.left,false);
+        playerMovement.KnockBack(Vector2.left);
         StartCoroutine(HurtCooldown());
     }
 
@@ -245,16 +246,25 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(hurtCooldown);
         currentState = PlayerState.Idle;
     }
+
+    #region Death Handle
     public void Death()
     {
         // disable all input
         // send a signal that player is dead
+        rb2D.velocity = Vector2.zero;
         if (playerInputHandler != null) playerInputHandler.OnDisable();
         playerInputHandler = null;
-        DisableAllScripts(); 
+        DisableAllScripts();
+        playerAnimHandle.SetDeathTrigger();
+    }
+
+    public void InvokeDeathEvent()
+    {
         DeathEvent();
     }
 
+#endregion
     private void DisableAllScripts()
     {
         MonoBehaviour[] scripts = gameObject.GetComponents<MonoBehaviour>();

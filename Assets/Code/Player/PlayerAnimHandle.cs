@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerAnimHandle : MonoBehaviour
 {
+
+    // Hidden Animator is used to invoke animation events 
     private Animator animator;
+    private Animator hiddenAnimator;
     private Player player;
     private string currentAnimationPlaying;
     private bool canSetAttackTriggerAgain = true;
@@ -13,6 +16,7 @@ public class PlayerAnimHandle : MonoBehaviour
     {
         player = GetComponent<Player>();
         animator = GetComponentInChildren<Animator>();
+        hiddenAnimator = GetComponent<Animator>();
        
     }
 
@@ -41,10 +45,17 @@ public class PlayerAnimHandle : MonoBehaviour
         if (player.currentState == Player.PlayerState.Hurt && canSetHurtTriggerAgain)
         {
             animator.SetTrigger("Hurt");
+           
             canSetHurtTriggerAgain = false;
             currentAnimationPlaying = "Hurt";
             StartCoroutine(CanPlayHurtAnimAgain());
         }
+    }
+
+    public void SetDeathTrigger()
+    {
+        animator.SetTrigger("Death");
+        hiddenAnimator.SetTrigger("Death");
     }
 
 

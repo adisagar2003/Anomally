@@ -124,7 +124,7 @@ public class Runner : BaseEnemy
     }
     public void GiveDamageToPlayer(Vector2 directionOfHurt)
     {
-        player.TakeDamage(directionOfHurt, flipped);
+        player.TakeDamage(directionOfHurt);
         currentState = RunnerState.Attacking;
         StartCoroutine(AfterAttack());
     }

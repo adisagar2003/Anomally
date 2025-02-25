@@ -143,20 +143,12 @@ public class PlayerMovement : MonoBehaviour
         canDash = true;
     }
 
-    public void KnockBack(Vector2 direction, bool side)
+    public void KnockBack(Vector2 direction)
     {
 
         StartCoroutine(StopTheVelocity());
-        if (side == true)
-        {
-            rb2D.velocity = new Vector2(1*knockbackForce, 0);
-        }
+        rb2D.velocity = new Vector2(direction.x * knockbackForce, 0);
 
-        else if (side == false)
-        {
-            rb2D.velocity = new Vector2(-1* knockbackForce, 0);
-        }
-        
     }
 
     // Use case: When a player is attacking, the velocity should be set to 0

@@ -66,10 +66,10 @@ public class GolemAttackState : GolemState
     public override void OnUpdate()
     {
         timer += Time.deltaTime;
-        Debug.Log("Attack timer " + timer);
         if (timer > attackAnimDuration)
         {
             Debug.Log("Anim Over");
+            timer = 0.0f;
             golemStateMachine.ChangeState(golem.golemWalkState);
 
         }

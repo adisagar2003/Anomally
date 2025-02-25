@@ -79,8 +79,8 @@ public class Rihno : BaseEnemy
         if (player == null) return;
         if (CheckForAttackingAgain())
         {
-            if (direction.x > 0.0f) player.TakeDamage(direction, true, damage);
-            if (direction.x < 0.0f) player.TakeDamage(direction, false, damage);
+            if (direction.x > 0.0f) player.TakeDamage(direction, damage);
+            if (direction.x < 0.0f) player.TakeDamage(direction, damage);
             // change state
             rihnoStateMachine.ChangeState(rihnoAttackState);
            

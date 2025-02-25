@@ -28,10 +28,13 @@ public class Golem : BaseEnemy
 
     #region Combat
     [SerializeField] private float knockbackForce = 100.0f;
+    [SerializeField] private Transform attackColliderTransform;
+    [SerializeField] private Vector3 attackColliderOffset;
+    [SerializeField] private float attackColliderRadius;
     #endregion
     private void OnEnable()
     {
-        
+       
     }
 
     private void OnDisable()
@@ -42,23 +45,9 @@ public class Golem : BaseEnemy
     private void Start()
     {
         playerRef = FindFirstObjectByType<Player>();
+        attackColliderTransform.position = attackColliderTransform.position + attackColliderOffset;
     }
 
-
-    private void LookAtPlayer()
-    {
-        float amt = Vectors.FindDirectionTowardsPlayer(playerRef, transform.position).x;
-
-        if (amt > 0)
-        {
-            transform.rotation = Quaternion.Euler(0, -180, 0);
-        }
-
-        if (amt < 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-    }
     private void Awake()
     {
         golemStateMachine = new GolemStateMachine();
@@ -114,7 +103,6 @@ public class Golem : BaseEnemy
 
     public override void Attack()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void Damage(float damageAmount)
@@ -150,7 +138,6 @@ public class Golem : BaseEnemy
         }
     }
 
-
     #region Combat
     public override void TakeDamage(float amount)
     {
@@ -164,11 +151,58 @@ public class Golem : BaseEnemy
         }
     }
 
+    public void EnableHitCollider()
+    {
+        // detect player
+        Collider2D[] overlappedColliders = Physics2D.OverlapCircleAll(attackColliderTransform.position, attackColliderRadius);
+        DetectPlayer(overlappedColliders);
+    }
+
+    private void DetectPlayer(Collider2D[] overlappedColliders)
+    {
+        foreach (Collider2D collider in overlappedColliders)
+        {
+            if (collider.CompareTag("Player"))
+            {
+                Player playerRef = collider.GetComponent<Player>();
+                DamagePlayer(playerRef);
+            }
+        }
+    }
+
+    private void DamagePlayer(Player playerRef)
+    {
+        Vector3 directionTowardsPlayer = Vectors.FindDirectionTowardsPlayer(playerRef, transform.position);
+        Debug.Log(directionTowardsPlayer + " Direction of Hit");
+        playerRef.TakeDamage(directionTowardsPlayer, damage);
+    }
     #endregion
     #region Movement
     public void MoveGolem(Vector2 direction)
     {
         rb.velocity = speed * direction;
     }
+
+    private void LookAtPlayer()
+    {
+        if (golemStateMachine.currentState is GolemDeathState) return;
+        float amt = Vectors.FindDirectionTowardsPlayer(playerRef, transform.position).x;
+
+        if (amt > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, -180, 0);
+        }
+
+        if (amt < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
     #endregion
+
+    private void OnDrawGizmos()
+    {
+        // Draw Hitbox
+        Gizmos.DrawWireSphere(attackColliderTransform.position + attackColliderOffset, attackColliderRadius);
+    }
 }
