@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     private PlayerAnimHandle playerAnimHandle;
     #endregion
 
+    private bool canInitiateSecondAttack = false;
     #region Cooldown
     public float hurtCooldown { get; private set; } = 0.2f;
     public float attackCooldown { get; private set; }
@@ -41,16 +42,18 @@ public class Player : MonoBehaviour
     public static event DeathDelegate DeathEvent;
 
     #endregion
-    // For debugging purpodses
+
+    #region Debug
     [SerializeField] private string debugData = "";
+    #endregion
     void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
         playerCombat = GetComponent<PlayerCombat>();
         playerInputHandler = GetComponent<PlayerInputHandler>();
         playerAnimHandle = GetComponent<PlayerAnimHandle>();
-        currentState = PlayerState.Idle;
         rb2D = GetComponent<Rigidbody2D>();
+        currentState = PlayerState.Idle;
         attackCooldown = playerCombat.GetAttackCooldown();
     }
 
@@ -80,12 +83,16 @@ public class Player : MonoBehaviour
     }
 
 
-
+    #region State Management
     private void StateManagementPhysics()
+    {
+        StateManagementLocomotion();
+    }
+
+    private void StateManagementLocomotion()
     {
         if (playerMovement.isOnGround)
         {
-            // shift  state to run
             if (IsIdle()) currentState = Player.PlayerState.Run;
 
             else SetIdle();
@@ -113,6 +120,7 @@ public class Player : MonoBehaviour
                 );
     }
 
+    #endregion
     #region Player Movement
     public void MovePlayer(float xInput)
     {
@@ -137,9 +145,6 @@ public class Player : MonoBehaviour
             StartCoroutine(DashCooldown());
         }
     }
-
-    #endregion
-    // Future migration: to PlayerMovement.cs
     private IEnumerator DashCooldown()
     {
         yield return new WaitForSeconds(playerMovement.dashCooldown);
@@ -148,8 +153,10 @@ public class Player : MonoBehaviour
         rb2D.gravityScale = playerMovement.gravity;
     }
 
+    #endregion
 
-    // Combat 
+
+    #region Combat
     public void Attack()
     {
         GroundAttack();
@@ -160,7 +167,6 @@ public class Player : MonoBehaviour
     {
         if (currentState == PlayerState.Attack || currentState == PlayerState.Jump) return;
         playerMovement.MoveForwardByAttack();
-        playerInputHandler.DisableInput();
         currentState = PlayerState.Attack;
         playerCombat.Attack();
         StartCoroutine(AttackCoroutine());
@@ -170,43 +176,28 @@ public class Player : MonoBehaviour
     private void AirAttack()
     {
         if (currentState == PlayerState.Attack) return;
-        playerInputHandler.DisableInput();
+        canInitiateSecondAttack = true;
         currentState = PlayerState.Attack;
         playerCombat.Attack();
+        
         StartCoroutine(AttackCoroutine());
     }
 
+    void InitiateSecondAttack()
+    {
+        Debug.Log("Initiated Second Attack");   
+        playerAnimHandle.SetSecondAttackAnimTrigger();
+    }
+
+
     private IEnumerator AttackCoroutine()
     {
-     
+        
         yield return new WaitForSeconds(attackCooldown);
+        canInitiateSecondAttack = false;
         currentState = Player.PlayerState.Idle;
         playerInputHandler.EnableInput();
 
-    }
-
-    public void TakeDamage()
-    {
-        if (currentState == PlayerState.Hurt) return;
-        currentState = PlayerState.Hurt;
-        PlayerDamageEvent(10.0f);
-        if (playerCombat.health < 0.0f)
-        {
-            Death();
-        }
-        StartCoroutine(HurtCooldown());
-    }
-
-    public void TakeDamage(float damage)
-    {
-        if (currentState == PlayerState.Hurt) return;
-        currentState = PlayerState.Hurt;
-        PlayerDamageEvent(damage);
-        if (playerCombat.health < 0.0f)
-        {
-            Death();
-        }
-        StartCoroutine(HurtCooldown());
     }
 
     public void TakeDamage(Vector2 hurtDirection,float amount = 3.0f)
@@ -225,27 +216,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    [ContextMenu("Take Damage Left")]
-    public void TakeDamageLeft()
-    {
-        if (currentState == PlayerState.Hurt) return;
-        currentState = PlayerState.Hurt;
-        PlayerDamageEvent(10.0f);
-        if (playerCombat.health < 0.0f)
-        {
-            Death();
-        }
-
-        // knock player back towards hurt Direction
-        playerMovement.KnockBack(Vector2.left);
-        StartCoroutine(HurtCooldown());
-    }
-
     private IEnumerator HurtCooldown()
     {
         yield return new WaitForSeconds(hurtCooldown);
         currentState = PlayerState.Idle;
     }
+    #endregion
 
     #region Death Handle
     public void Death()

@@ -22,7 +22,7 @@ public class PlayerInputHandler : MonoBehaviour
         controls = new InputMaster();
     }
 
-    private void AttackAction()
+    public void AttackAction()
     {
         if (currentState == InputSystem.Disable) return;
         player.Attack();

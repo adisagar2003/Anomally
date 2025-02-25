@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Common;
 
 public class Rihno : BaseEnemy
 {
@@ -70,7 +71,8 @@ public class Rihno : BaseEnemy
     public override void Attack()
     {
         // Attack player if not null.
-        player.TakeDamage(damage);
+        Vector2 direction = Vectors.FindDirectionTowardsPlayer(player, transform.position);
+        player.TakeDamage(direction,damage);
     }
 
     // Attack the player

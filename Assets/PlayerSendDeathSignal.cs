@@ -15,4 +15,9 @@ public class PlayerSendDeathSignal : MonoBehaviour
     {
         player.InvokeDeathEvent();
     }
+    
+    public void SendAttackSignal()
+    {
+        player.Attack();
+    }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,7 @@ using UnityEngine;
 public class PlayerAnimHandle : MonoBehaviour
 {
 
-    // Hidden Animator is used to invoke animation events 
     private Animator animator;
-    private Animator hiddenAnimator;
     private Player player;
     private string currentAnimationPlaying;
     private bool canSetAttackTriggerAgain = true;
@@ -16,8 +15,6 @@ public class PlayerAnimHandle : MonoBehaviour
     {
         player = GetComponent<Player>();
         animator = GetComponentInChildren<Animator>();
-        hiddenAnimator = GetComponent<Animator>();
-       
     }
 
     private void Update()
@@ -55,7 +52,6 @@ public class PlayerAnimHandle : MonoBehaviour
     public void SetDeathTrigger()
     {
         animator.SetTrigger("Death");
-        hiddenAnimator.SetTrigger("Death");
     }
 
 
@@ -77,5 +73,12 @@ public class PlayerAnimHandle : MonoBehaviour
         yield return new WaitForSeconds(player.hurtCooldown);
         canSetHurtTriggerAgain = true;
         animator.ResetTrigger("Hurt");
+    }
+
+    public void SetSecondAttackAnimTrigger()
+
+    {
+        animator.ResetTrigger("Attack");
+        animator.SetTrigger("Attack2");
     }
 }

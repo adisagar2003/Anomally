@@ -44,22 +44,27 @@ public class PlayerCombat : MonoBehaviour
 
     public void Attack()
     {
-       
+
         // make a colldier
         Collider2D[] obj = Physics2D.OverlapCircleAll(attackColliderPosition.transform.position, attackColliderRadius);
+        AttackEnemiesInRange(obj);
+    }
 
-        foreach(Collider2D ob in obj)
+    private void AttackEnemiesInRange(Collider2D[] obj)
+    {
+        foreach (Collider2D ob in obj)
         {
             if (ob.tag == "Destructible")
             {
                 IDamagable obInterface = ob.GetComponent<IDamagable>();
-                if (obInterface != null) {
+                if (obInterface != null)
+                {
                     obInterface.TakeDamage(damage);
                     EnemyDamagedEvent();
                 }
             }
 
-           if (ob.tag == "RunnerHurtCollider")
+            if (ob.tag == "RunnerHurtCollider")
             {
                 Runner runnerRef = ob.GetComponentInParent<Runner>();
                 if (runnerRef != null)
@@ -68,10 +73,10 @@ public class PlayerCombat : MonoBehaviour
                     EnemyDamagedEvent();
                 }
             }
-           
-           if (ob.tag == "HurtCollider")
+
+            if (ob.tag == "HurtCollider")
             {
-                
+
                 EnemyDamagedEvent();
                 BaseEnemy enemyRef = ob.GetComponentInParent<BaseEnemy>();
                 if (enemyRef != null)
@@ -80,7 +85,7 @@ public class PlayerCombat : MonoBehaviour
                     enemyRef.TakeDamage(damage);
                 }
             }
-            
+
         }
     }
 

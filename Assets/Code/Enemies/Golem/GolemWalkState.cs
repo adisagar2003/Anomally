@@ -25,6 +25,7 @@ public class GolemWalkState : GolemState
     public override void ExitState()
     {
         golemAnimator.SetBool("isWalking", false);
+      
         base.ExitState();
     }
 
