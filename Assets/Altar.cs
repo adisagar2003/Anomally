@@ -26,7 +26,7 @@ public class Altar : MonoBehaviour
     {
         isInRangeOfActivation = value;
     }
-
+    
     private void Update()
     {
         LevitateSphere();

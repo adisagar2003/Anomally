@@ -7,6 +7,7 @@ public class BlinkText : MonoBehaviour
 {
     private Image image;
     [SerializeField] private float blinkTimeSpeed = 1.5f;
+    private float timer = 0;
 
     private void Awake()
     {
@@ -21,8 +22,12 @@ public class BlinkText : MonoBehaviour
 
     private void SetOpacityWithRespectToTime()
     {
-        var tempColor = image.color;
-        tempColor.a = Mathf.PingPong(Time.time * blinkTimeSpeed, 1);
-        image.color = tempColor;
+        timer += Time.deltaTime;
+        if (timer > 3.0f)
+        {
+            var tempColor = image.color;
+            tempColor.a = Mathf.PingPong(Time.time * blinkTimeSpeed, 1);
+            image.color = tempColor;
+        }
     }
 }

@@ -19,6 +19,7 @@ public class PlayerInputHandler : MonoBehaviour
     public InputSystem currentState;
     void Awake()
     {
+        player = FindFirstObjectByType<Player>();
         controls = new InputMaster();
     }
 

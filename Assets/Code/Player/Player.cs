@@ -41,6 +41,9 @@ public class Player : MonoBehaviour
     public delegate void DeathDelegate();
     public static event DeathDelegate DeathEvent;
 
+    // event: Send health to UI;
+    public delegate void SendCurrentHealth(float health);
+    public static event SendCurrentHealth OnSendCurrentHealth;
     #endregion
 
     #region Debug
@@ -204,8 +207,8 @@ public class Player : MonoBehaviour
     {
         if (currentState == PlayerState.Hurt) return;
         currentState = PlayerState.Hurt;
+        OnSendCurrentHealth(playerCombat.health);
         PlayerDamageEvent(amount);
-
         // knock player back towards hurt Direction
         playerMovement.KnockBack(new Vector2(hurtDirection.x, 0));
         StartCoroutine(HurtCooldown());

@@ -4,29 +4,44 @@ using UnityEngine;
 
 public class HealthBar : MonoBehaviour
 {
-    private float maxWidth = 300.0f;
+    private float initialWidth;
+    private float maxWidth;
     private RectTransform rectTransform;
-
+    private float playerHealth = 100.0f;
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        maxWidth = rectTransform.rect.width;
+        initialWidth = rectTransform.rect.width;
     }
 
     private void OnEnable()
     {
+        Player.OnSendCurrentHealth += SetPlayerHealth;       
         Player.PlayerDamageEvent += TakeDamage;
-        
     }
 
     private void OnDisable()
     {
+        Player.OnSendCurrentHealth -= SetPlayerHealth;
         Player.PlayerDamageEvent -= TakeDamage;
+
     }
 
     private void TakeDamage(float damage)
     {
-        maxWidth -= damage * 3;
-        rectTransform.sizeDelta = new Vector2(Mathf.Clamp(maxWidth,0,300.0f), rectTransform.sizeDelta.y);
+        playerHealth -= damage;
+        rectTransform.sizeDelta = new Vector2(Mathf.Clamp(SetWidthForHealthBar(),0,300.0f), rectTransform.sizeDelta.y);
+    }
+
+    private float SetWidthForHealthBar()
+    {
+        return (playerHealth / 100.0f) * maxWidth;
+    }
+
+    private void SetPlayerHealth(float health)
+    {
+        playerHealth = health;
     }
 
 }

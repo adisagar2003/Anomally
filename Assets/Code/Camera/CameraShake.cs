@@ -36,7 +36,7 @@ public class CameraShake : MonoBehaviour
         shakeTime = 0;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (shakeTime/0.01 > 1)
         {

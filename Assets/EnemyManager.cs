@@ -25,22 +25,10 @@ public class EnemyManager : MonoBehaviour
     }
     void Awake()
     {
-        SingletonHandle();
     }
 
 
-    private void SingletonHandle()
-    {
-        // prevents copies
-        if (_instance == null)
-        {
-            _instance = new EnemyManager();
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+   
 
     [ContextMenu("Initialize")]
     public void Initialize()
